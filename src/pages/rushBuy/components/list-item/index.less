@@ -1,0 +1,109 @@
+.list_item_box {
+  width: 100%;
+  height: 398px;
+  background: #fff;
+  .item_main {
+    padding: 35px 35px 32px 32px;
+    box-sizing: border-box;
+    .main_img {
+      width: 186px;
+      height: 186px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .main_details {
+      padding: 11px 0 14px 20px;
+      box-sizing: border-box;
+      height: 186px;
+      width: calc(100% - 186px);
+      position: relative;
+      .item_name {
+        font-size: 34px;
+        font-weight: bold;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 1;
+        padding-bottom: 30px;
+      }
+      .item_progress_box {
+        width: 100%;
+        .progress {
+          width:319px;
+          height:24px;
+          background:rgba(68,134,247,.2);
+          border-radius:12px;
+          overflow: hidden;
+          .line {
+            width: 56%;
+            height:24px;
+            background:rgb(68,134,247);
+            border-radius: 12px;
+          }
+        }
+        .item_progress_label {
+          font-size: 26px;
+          color: #ADB5BD;
+          margin-left: 28px;
+          line-height: 1;
+        }
+      }
+      .money_box {
+        line-height: 1;
+        margin-top: 50px;
+        .new_money {
+          font-size:34px;
+          font-weight: bold;
+          color: #DC0606;
+        }
+        .old_money {
+          font-size: 24px;
+          color: #ADB5BD;
+          text-decoration: line-through;
+          margin-left: 25px;
+        }
+      }
+      .item_button {
+        width:135px;
+        height:56px;
+        background:rgba(68,134,247,1);
+        border-radius:10px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        color: #fff;
+        font-size: 26px;
+        padding-left: 15px;
+      }
+    }
+  }
+  .number_box {
+    width: 100%;
+    height: 139px;
+    border-top: 1px solid #B8BFC6;
+    .borderRight {
+      position: relative;
+    }
+    .borderRight::after {
+      content: '';
+      width: 1px;
+      height: 59px;
+      background: #ADB5BD;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .number_name {
+      font-size: 24px;
+      color: #ADB5BD;
+    }
+    .number {
+      font-size: 30px;
+      color: #2C3E50;
+    }
+  }
+}

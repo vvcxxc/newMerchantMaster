@@ -1,0 +1,86 @@
+.select_box {
+  width: 100%;
+  height: 80px;
+  background: #ffffff;
+  font-size: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  .title {
+    margin-right: 20px;
+  }
+  .bottomRight {
+    position: relative;
+    width: 25%;
+  }
+  .bottomRight::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 60px;
+    background: #ADB5BD;
+    position: absolute;
+    right: 0;
+  }
+  .triangle_up {
+    width: 0;
+    height: 0;
+    border-top: 0 solid black;
+    border-right: 11px solid transparent;
+    border-bottom: 9px solid #4486F7;
+    border-left: 11px solid transparent;
+    margin-bottom: 4px;
+  }
+  .triangle_down {
+    width: 0;
+    height: 0;
+    border-top: 0 solid black;
+    border-right: 11px solid transparent;
+    border-top: 9px solid #4486F7;
+    border-left: 11px solid transparent;
+  }
+  .triangle_up_no {
+    width: 0;
+    height: 0;
+    border-top: 0 solid black;
+    border-right: 11px solid transparent;
+    border-bottom: 9px solid #ADB5BD;
+    border-left: 11px solid transparent;
+    margin-bottom: 4px;
+  }
+  .triangle_down_no {
+    width: 0;
+    height: 0;
+    border-top: 0 solid black;
+    border-right: 11px solid transparent;
+    border-top: 9px solid #ADB5BD;
+    border-left: 11px solid transparent;
+  }
+  .mark {
+    width: 100%;
+    height: calc(100vh - 80px);
+    background: rgba(0, 0, 0, .29);
+    position: absolute;
+    top: 80px;
+    z-index: 99;
+    touch-action: none;
+    .choose_box {
+      width: 100%;
+      height: 274px;
+      background: #fff;
+      .choose_item {
+        height: 87px;
+        border-bottom: 1px solid #F0F2F5;
+        padding-left: 28px;
+        padding-right: 32px;
+      }
+      .active {
+        height: 87px;
+        border-bottom: 1px solid #F0F2F5;
+        padding-left: 28px;
+        padding-right: 32px;
+        color: #4781FE;
+      }
+    }
+  }
+}

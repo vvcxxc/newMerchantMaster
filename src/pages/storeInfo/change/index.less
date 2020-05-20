@@ -1,0 +1,90 @@
+.inputBox {
+  width: auto;
+  height: 100px;
+  border-bottom: 1px solid #eee;
+  padding-left: 40px;
+  padding-right: 40px;
+
+  div {
+    width: 100%;
+  }
+}
+
+input::-webkit-input-placeholder {
+  color: #999;
+}
+
+.header :global {
+  .am-flexbox {
+    width: auto;
+  }
+}
+
+.phonePages :global {
+  .am-flexbox {
+    width: auto;
+  }
+}
+
+.header {
+  height: 100px;
+  background: #F8F8F8;
+  justify-content: space-around;
+
+  .num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 20px;
+    margin-right: 12px;
+  }
+
+  .actives {
+    color: #FF6654;
+
+    .num {
+      background: #FF6654;
+      color: #fff;
+    }
+  }
+
+  .no_actives {
+    color: #999;
+
+    .num {
+      background: #ccc;
+      color: #fff;
+    }
+  }
+}
+
+.inputRow {
+  font-size: 26px;
+  color: #999;
+  height: 100px;
+  line-height: 100px;
+  padding: 0 43px;
+  border-bottom: 1px solid #eee;
+  justify-content: space-between;
+
+  .code {
+    color: #21418A;
+    font-size: 26px;
+  }
+
+}
+
+.errorLine {
+  border-top: 1px solid #d2284b;
+  position: relative;
+  margin-bottom: -0.2rem;
+  height: 0.2rem;
+  z-index: 10;
+  font-size: 0.22rem;
+  font-family: PingFang SC;
+  font-weight: 500;
+  color: #d2284b;
+  text-align: right;
+}
