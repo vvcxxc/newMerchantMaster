@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { Flex, Carousel } from 'antd-mobile'
 import styles from './index.less'
 import moment from 'moment'
-
-let timer = null
+import GiftModal from './modal'
+let timer:any = null
 export default class CouponDetails extends Component {
   state = {
-    timeout: {}
+    timeout: {},
+    is_modal: false
   }
 
   componentDidMount() {
@@ -39,6 +40,10 @@ export default class CouponDetails extends Component {
 
   componentWillUnmount() {
     clearInterval(timer)
+  }
+
+  showGift = () => {
+    this.setState({is_modal: true})
   }
 
   render() {
@@ -93,7 +98,7 @@ export default class CouponDetails extends Component {
           <Flex className={styles.box_title}>成交有礼</Flex>
           <div className={styles.list}>
 
-            <div className={styles.item}>
+            <div className={styles.item} onClick={this.showGift}>
               <div className={styles.item_img_box}>
                 <div className={styles.item_label}>实物券</div>
                 <img src='http://tmwl.oss-cn-shenzhen.aliyuncs.com/front/tZBzzmfsJtQDz4xAHYs8pX2z8AfCyWdD.png' alt="" />
@@ -131,6 +136,11 @@ export default class CouponDetails extends Component {
           <Flex className={styles.box_title}>商品详情</Flex>
           <img src='http://tmwl.oss-cn-shenzhen.aliyuncs.com/front/tZBzzmfsJtQDz4xAHYs8pX2z8AfCyWdD.png' alt="" />
         </div>
+
+        {
+          this.state.is_modal ?  <GiftModal onChange={()=> this.setState({is_modal: false})}/> : null
+        }
+
 
       </div>
     )

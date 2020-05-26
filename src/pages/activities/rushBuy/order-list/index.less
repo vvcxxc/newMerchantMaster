@@ -1,0 +1,77 @@
+.list_page {
+  width: 100%;
+  height: 100%;
+  .tabs_box {
+    width: 100%;
+    height: 80px;
+    font-size: 30px;
+    background: #fff;
+    border-bottom: 2px solid #F0F2F5;
+  }
+  .bottomRight {
+    position: relative;
+  }
+  .bottomRight::after {
+    content: '';
+    display: block;
+    width:2px;
+    height:59px;
+    background:rgba(173,181,189,1);
+    opacity:0.28;
+    position: absolute;
+    right: 0;
+  }
+
+  .list {
+    padding-left: 30px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    background: #fff;
+    .item {
+      width: 100%;
+      height: 128px;
+      background: #fff;
+      padding: 30px 0 20px 0;
+      .item_img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+      }
+      .item_main {
+        padding-right: 45px;
+        box-sizing: border-box;
+        height: 100%;
+        position: relative;
+        .item_left {
+          font-size: 34px;
+          color: #333333;
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          line-height: 1;
+          height: 100%;
+        }
+        .item_right {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          line-height: 1;
+          height: 100%;
+          align-items: flex-end;
+          .money {
+            color: #E6572F;
+            font-size: 34px;
+          }
+          .time {
+            color: #C1C4C6;
+            font-size: 26px;
+          }
+        }
+        .icon_right {
+          position: absolute;
+          right: 0;
+        }
+      }
+    }
+  }
+}

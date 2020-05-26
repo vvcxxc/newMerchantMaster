@@ -258,7 +258,7 @@ export default connect(({ createCoupon }: any) => createCoupon)(
         Toast.fail('请先输入发放数量')
         return
       }
-      router.push({ pathname: '/activitys/gift', query: {sum: total_num, type: 4}})
+      router.push({ pathname: '/activities/gift', query: {sum: total_num, type: 4}})
     }
 
     render() {
