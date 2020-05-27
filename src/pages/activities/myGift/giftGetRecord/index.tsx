@@ -37,10 +37,18 @@ export default class GiftGetRecord extends Component<any> {
                 </div>
 
                 <div className={styles.moreBox}>
-                <img className={styles.moreIcon} src="http://oss.tdianyi.com/front/GQr5D7QZwJczZ6RTwDapaYXj8nMbkenx.png" />
-                <div className={styles.moreText}>点击查看更多</div>
+                    <img className={styles.moreIcon} src="http://oss.tdianyi.com/front/GQr5D7QZwJczZ6RTwDapaYXj8nMbkenx.png" />
+                    <div className={styles.moreText}>点击查看更多</div>
 
                 </div>
+
+{/* 
+                <div className={styles.gift-nodata-box}>
+                    <div className={styles.gift-nodata}>
+                        <img className={styles.gift-nodata-img} src="http://oss.tdianyi.com/front/k8ZSCiyS82z8NdnFeKfHSwChcdSfsXwd.png" />
+                        <div className={styles.gift-nodata-info}>暂无邀请数据，快去逛逛吧</div>
+                    </div>
+                </div> */}
 
             </div>
         )
