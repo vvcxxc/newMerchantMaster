@@ -150,7 +150,7 @@ export default class SubmitQualifications extends Component {
         this.setState({ tempmanage_list_value: id, tempselector: label });
     }
     closeCheckout = () => {
-        this.setState({  actionSheetShow: false });
+        this.setState({ actionSheetShow: false });
     }
     /**经营类型的选择 */
     checkout = () => {
@@ -764,6 +764,7 @@ export default class SubmitQualifications extends Component {
                                                 <div className={styles.doorPhotoItem}>
                                                     <div className={styles.doorPhotoItemArea}>
                                                         <ImagePicker
+                                                            accept={"image/*"}
                                                             className={styles.PickerBtn}
                                                             files={this.state.files1}
                                                             multiple={false}
