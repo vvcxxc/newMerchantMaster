@@ -4,7 +4,7 @@ import { Flex, WingBlank, Button, InputItem, Toast, View } from 'antd-mobile';
 import styles from './index.less';
 import request from '@/services/request'
 import router from 'umi/router';
-export default class Notice extends Component<any> {
+export default class MyGift extends Component<any> {
     state = {
 
     };
