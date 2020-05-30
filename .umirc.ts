@@ -21,7 +21,7 @@ const config: IConfig = {
         dll: false,
         // chunk: ['vendor','umi'],
         devServer: {
-          host: '192.168.2.187',
+          host: 'localhost',
           inline: true,
           port: 8090,
         },
