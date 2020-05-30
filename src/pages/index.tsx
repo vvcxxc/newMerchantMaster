@@ -9,9 +9,28 @@ export default class Index extends Component {
 
   }
 
-  render (){
+  render() {
     return (
-      <div>222</div>
+      <div className={styles.page}>
+        <Flex className={styles.index_top}>
+          <Flex direction='column' justify='center' align='center'>
+            <img src="" alt="" />
+            <div>扫码验券</div>
+          </Flex>
+          <Flex direction='column' justify='center' align='center'>
+            <img src="" alt="" />
+            <div>财务统计</div>
+          </Flex>
+          <Flex direction='column' justify='center' align='center'>
+            <img src="" alt="" />
+            <div>核销记录</div>
+          </Flex>
+          <Flex direction='column' justify='center' align='center'>
+            <img src="" alt="" />
+            <div>核销记录</div>
+          </Flex>
+        </Flex>
+      </div>
     )
   }
 }

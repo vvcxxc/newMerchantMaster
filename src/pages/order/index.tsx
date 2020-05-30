@@ -177,7 +177,7 @@ export default connect(({ orderList }: any) => orderList)(
       const orderList = this.props.list.length ? (
         this.props.list.map((_: any, index) => (
           <Flex className={styles.orderItem} key={index} onClick={this.handleClickOrder(_.id)}>
-            <img src={require('@/assets/index/in_store_return.png')} />
+            {/* <img src={require('@/assets/index/in_store_return.png')} /> */}
             <Flex className="content">
               <div className='content_main'>
                 <div className="ordernum">{_.youhui_sn}</div>
