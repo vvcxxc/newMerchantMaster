@@ -37,7 +37,7 @@ const model: Model = {
         coupon_gift: [],
         snap_validity: 0,//抢购有效期（月）
         snap_price: '',//抢购价格
-        snap_num: '',//抢购数量
+        snap_num: '',//抢购总数量
         snap_limit: 0,//抢购限制 0:无限制 1:x张/人
         snap_limitNum: 0,//x张/人
         snap_promote: 0,//0是1否

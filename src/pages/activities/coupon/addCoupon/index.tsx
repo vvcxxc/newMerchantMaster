@@ -49,7 +49,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                     [type]: e.target.value.trim()
                 }
             });
-        } else {
+        } else if (numberType == 3) {
             //莫得规则
             this.props.dispatch({
                 type: 'addCoupon/setCoupon',
@@ -87,7 +87,24 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
             }
         });
     }
-
+    //抢购限制 
+    changeSnapLimit = (type: number) => {
+        this.props.dispatch({
+            type: 'addCoupon/setCoupon',
+            payload: {
+                snap_limit: type
+            }
+        });
+    }
+    //是否推广 
+    changeSnapPromote = (type: number) => {
+        this.props.dispatch({
+            type: 'addCoupon/setCoupon',
+            payload: {
+                snap_promote: type
+            }
+        });
+    }
 
     render() {
         return (
@@ -107,7 +124,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                     <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>名称</div>
                         <div className={styles.addCouponItemRight}>
-                            <input className={styles.addCouponItemRightTextLong} type="text" placeholder="请输入劵的名称" />
+                            <input className={styles.addCouponItemRightTextLong} type="text" placeholder="请输入劵的名称" onChange={this.handlechange.bind(this, 'coupon_name', 3)} value={this.props.coupon_name} />
                         </div>
                     </div>
                     <div className={styles.addCouponItem}>
@@ -120,7 +137,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                     <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>购买价格</div>
                         <div className={styles.addCouponItemRight}>
-                            <input className={styles.addCouponItemRightTextShort} type="text" />
+                            <input className={styles.addCouponItemRightTextShort} type="text" onChange={this.handlechange.bind(this, 'coupon_purchasePrice', 2)} value={this.props.coupon_purchasePrice} />
                             <div className={styles.addCouponContentTitleleftUnit}>元</div>
                         </div>
                     </div>
@@ -137,7 +154,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                     </div>
                     <div className={styles.addCouponTextAreaBox}>
                         <div className={styles.addCouponTextAreaTitle}>分享信息</div>
-                        <textarea className={styles.addCouponTextAreaContent} placeholder="请输入分享内容" />
+                        <textarea className={styles.addCouponTextAreaContent} placeholder="请输入分享内容" onChange={this.handlechange.bind(this, 'coupon_shareInfo', 3)} value={this.props.coupon_shareInfo} />
                     </div>
                 </div>
                 <div className={styles.addCouponContent}>
@@ -240,46 +257,61 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                     <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>抢购价</div>
                         <div className={styles.addCouponItemRight}>
-                            <input className={styles.addCouponItemRightTextShort} type="text" />
+                            <input className={styles.addCouponItemRightTextShort} type="text" onChange={this.handlechange.bind(this, 'snap_price', 2)} value={this.props.snap_price} />
                             <div className={styles.addCouponContentTitleleftUnit}>元</div>
                         </div>
                     </div>
                     <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>抢购数量</div>
                         <div className={styles.addCouponItemRight}>
-                            <input className={styles.addCouponItemRightTextShort} type="text" />
+                            <input className={styles.addCouponItemRightTextShort} type="text" onChange={this.handlechange.bind(this, 'snap_num', 1)} value={this.props.snap_num} />
                             <div className={styles.addCouponContentTitleleftUnit}>张</div>
                         </div>
                     </div>
                     <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>限购设置</div>
                         <div className={styles.addCouponItemRight}>
-                            <div className={styles.addCouponItemChooseItem}>
-                                <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/yXwnbxtHBeniQYik3SNYS7rP3c6HZYTa.png" />
+                            <div className={styles.addCouponItemChooseItem} onClick={this.changeSnapLimit.bind(this, 0)}>
+                                {
+                                    this.props.snap_limit == 0 ? <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/32HHntmb2bCxJB7KQYsyBcBNkKFNPnen.png" />
+                                        : <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/yXwnbxtHBeniQYik3SNYS7rP3c6HZYTa.png" />
+                                }
                                 <div className={styles.addCouponItemChooseItemText}>无限制</div>
                             </div>
-                            <div className={styles.addCouponItemChooseItem}>
-                                <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/32HHntmb2bCxJB7KQYsyBcBNkKFNPnen.png" />
+                            <div className={styles.addCouponItemChooseItem} onClick={this.changeSnapLimit.bind(this, 1)}>
+                                {
+                                    this.props.snap_limit == 1 ? <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/32HHntmb2bCxJB7KQYsyBcBNkKFNPnen.png" />
+                                        : <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/yXwnbxtHBeniQYik3SNYS7rP3c6HZYTa.png" />
+                                }
                                 <div className={styles.addCouponItemChooseItemText}>x份/人</div>
                             </div>
                         </div>
                     </div>
-                    <div className={styles.addCouponGreyItem}>
-                        <div className={styles.addCouponGreyItemLeft}>请设置多少张一个人</div>
-                        <div className={styles.addCouponGreyItemRight}>
-                            <input className={styles.addCouponGreyItemTextShort} type="text" />
-                            <div className={styles.addCouponGreyItemUnit}>张</div>
-                        </div>
-                    </div>
+                    {
+                        this.props.snap_limit == 1 ?
+                            <div className={styles.addCouponGreyItem}>
+                                <div className={styles.addCouponGreyItemLeft}>请设置多少张一个人</div>
+                                <div className={styles.addCouponGreyItemRight}>
+                                    <input className={styles.addCouponGreyItemTextShort} type="text" onChange={this.handlechange.bind(this, 'snap_limitNum', 1)} value={this.props.snap_limitNum} />
+                                    <div className={styles.addCouponGreyItemUnit}>张</div>
+                                </div>
+                            </div> : null
+                    }
                     <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>首页推广</div>
                         <div className={styles.addCouponItemRight}>
-                            <div className={styles.addCouponItemChooseItem}>
-                                <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/yXwnbxtHBeniQYik3SNYS7rP3c6HZYTa.png" />
+                            <div className={styles.addCouponItemChooseItem} onClick={this.changeSnapPromote.bind(this, 0)}>
+                                {
+                                    this.props.snap_promote == 0 ? <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/32HHntmb2bCxJB7KQYsyBcBNkKFNPnen.png" />
+                                        : <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/yXwnbxtHBeniQYik3SNYS7rP3c6HZYTa.png" />
+                                }
                                 <div className={styles.addCouponItemChooseItemText}>是</div>
                             </div>
-                            <div className={styles.addCouponItemChooseItem}>
-                                <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/32HHntmb2bCxJB7KQYsyBcBNkKFNPnen.png" />
+                            <div className={styles.addCouponItemChooseItem} onClick={this.changeSnapPromote.bind(this, 1)}>
+                                {
+                                    this.props.snap_promote == 1 ? <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/32HHntmb2bCxJB7KQYsyBcBNkKFNPnen.png" />
+                                        : <img className={styles.addCouponItemChooseItemIcon} src="http://oss.tdianyi.com/front/yXwnbxtHBeniQYik3SNYS7rP3c6HZYTa.png" />
+                                }
                                 <div className={styles.addCouponItemChooseItemText}>否</div>
                             </div>
                         </div>
