@@ -12,7 +12,7 @@ interface Props {
 }
 
 
-export default function Header ({color='light', title, style, rightRender}: Props) {
+export default function Header ({color='light', title='', style, rightRender}: Props) {
   return (
     <div>
       <Flex className={styles.header_box} align='center' style={style} justify='between'>

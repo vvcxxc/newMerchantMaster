@@ -1,4 +1,4 @@
-/**发布引流礼品 */
+/**title: 发布引流礼品 */
 import React, { Component } from 'react'
 import { Flex, Toast, Icon, ImagePicker } from 'antd-mobile'
 import upload from '@/services/oss'

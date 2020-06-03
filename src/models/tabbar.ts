@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-05-20 15:52:37
+ * @LastEditTime: 2020-06-02 09:47:56
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \newMerchantMaster\src\models\tabbar.ts
+ */
 import { Model } from 'dva';
 
 const model: Model = {
@@ -11,7 +19,7 @@ const model: Model = {
     setShow(state, { payload }) {
       const index = state.pages.findIndex((_: any) => _ === payload);
       // 可以充当路由守卫，每次路由变化会触发
-      // console.log('触发了')
+      console.log('触发了')
       // window.onerror = function(msg, url, line, col, error){
       //   if(error){
       //     console.log(error)

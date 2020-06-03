@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-05-20 15:52:37
+ * @LastEditTime: 2020-06-03 13:57:15
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \newMerchantMaster\src\app.ts
+ */
 // ref: https://umijs.org/config/
 declare const Environment: string
 import Vconsole from 'vconsole'
@@ -25,14 +33,13 @@ export const dva = {
 
 /**路由变化 */
 export const onRouteChange = (params: { location: any, routes: any }) => {
-  // console.log(params)
   try {
     const defaultTitle = '小熊敬礼'
     const path = params.location.pathname
     const routerConfig = params.routes[0].routes
     const router = routerConfig.find((_: any) => _.path === path)
     window.title = router.title || defaultTitle
-    return params.routes
+    // return params.routes
 
   } catch (e) {
     throw new Error(e)
