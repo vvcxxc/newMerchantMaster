@@ -4,8 +4,9 @@ export interface Coupon {
     coupon_classification: string;
     coupon_classificationId: string | number;//分类id
     coupon_name: string;//券名字
-    coupon_marketPrice: string | number;//市场价
+    coupon_denomination: string | number;//面额
     coupon_purchasePrice: string | number;//购买价
+    coupon_threshold: string | number;//门槛
     coupon_validity: string | number,//有效期（月）
     coupon_allUseNotice: Array<any>;//使用须知
     coupon_useNotice: Array<any>;//使用须知
@@ -23,13 +24,14 @@ export interface Coupon {
     snap_promote: number,//0是1否
 }
 const model: Model = {
-    namespace: 'addCoupon',
+    namespace: 'addMoney',
     state: {
         coupon_classification: '',//分类
         coupon_classificationId: '',//分类id
         coupon_name: '',//券名字
-        coupon_marketPrice: '',//市场价
+        coupon_denomination: '',//面额
         coupon_purchasePrice: '',//购买价
+        coupon_threshold: '',//门槛
         coupon_validity: 0,//有效期（月）
         coupon_allUseNotice: [
             { id: 0, value: '111111111111111111111111111111111', select: true },
@@ -52,7 +54,7 @@ const model: Model = {
         snap_promote: 0,//0是1否
     },
     reducers: {
-        setCoupon(state, { payload }) {
+        setMoney(state, { payload }) {
             return {
                 ...state,
                 ...payload
@@ -64,8 +66,9 @@ const model: Model = {
                 coupon_classification: '',//分类
                 coupon_classificationId: '',//分类id
                 coupon_name: '',//券名字
-                coupon_marketPrice: '',//市场价
+                coupon_denomination: '',//面额
                 coupon_purchasePrice: '',//购买价
+                coupon_threshold: '',//门槛
                 coupon_validity: 0,//有效期（月）
                 coupon_allUseNotice: [],//使用须知
                 coupon_useNotice: [],//使用须知

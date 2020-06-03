@@ -9,7 +9,7 @@ import CouponImgRules from '@/components/upLoadImgRules'
 import router from 'umi/router';
 import SelectTime from '@/components/select-time';
 
-export default connect(({ addCoupon }: any) => addCoupon)(class createGroup extends Component<any> {
+export default connect(({ addMoney }: any) => addMoney)(class createGroup extends Component<any> {
     state = {
         selectMonthShow: false,
         uploadImgRulesShow: false,
@@ -25,7 +25,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
         console.log(this.props)
         if (query != undefined) {
             this.props.dispatch({
-                type: 'addCoupon/setCoupon',
+                type: 'addMoney/setMoney',
                 payload: {
                     coupon_validity: query
                 }
@@ -41,7 +41,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
         if (numberType == 1 && /^[0-9]*$/.test(e.target.value.trim())) {
             //整数
             this.props.dispatch({
-                type: 'addCoupon/setCoupon',
+                type: 'addMoney/setMoney',
                 payload: {
                     [type]: Number(e.target.value)
                 }
@@ -49,7 +49,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
         } else if (numberType == 2 && (/^[0-9]+\.+[0-9]\d{0,1}$/.test(e.target.value.trim()) || /^[0-9]+\.?$/.test(e.target.value.trim()) || e.target.value.trim() == "")) {
             //2位小数
             this.props.dispatch({
-                type: 'addCoupon/setCoupon',
+                type: 'addMoney/setMoney',
                 payload: {
                     [type]: e.target.value.trim()
                 }
@@ -57,7 +57,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
         } else if (numberType == 3) {
             //莫得规则
             this.props.dispatch({
-                type: 'addCoupon/setCoupon',
+                type: 'addMoney/setMoney',
                 payload: {
                     [type]: e.target.value
                 }
@@ -73,7 +73,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                 Toast.hide();
                 let returnImgUrl = res.data.path;
                 this.props.dispatch({
-                    type: 'addCoupon/setCoupon',
+                    type: 'addMoney/setMoney',
                     payload: {
                         [type]: returnImgUrl
                     }
@@ -86,7 +86,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
 
     onCloseCouponImg = (type: string) => {
         this.props.dispatch({
-            type: 'addCoupon/setCoupon',
+            type: 'addMoney/setMoney',
             payload: {
                 [type]: ""
             }
@@ -95,7 +95,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
     //抢购限制 
     changeSnapLimit = (type: number) => {
         this.props.dispatch({
-            type: 'addCoupon/setCoupon',
+            type: 'addMoney/setMoney',
             payload: {
                 snap_limit: type
             }
@@ -104,7 +104,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
     //是否推广 
     changeSnapPromote = (type: number) => {
         this.props.dispatch({
-            type: 'addCoupon/setCoupon',
+            type: 'addMoney/setMoney',
             payload: {
                 snap_promote: type
             }
@@ -118,7 +118,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
     closeModal = () => this.setState({ showSelectTime: false });
     handleSelectTime = (time: any) => {
         this.props.dispatch({
-            type: 'addCoupon/setCoupon',
+            type: 'addMoney/setMoney',
             payload: {
                 start_date: time.startTime.toString(),
                 end_date: time.endTime.toString()
@@ -149,9 +149,9 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                         </div>
                     </div>
                     <div className={styles.addCouponItem}>
-                        <div className={styles.addCouponItemLeft}>市场价</div>
+                        <div className={styles.addCouponItemLeft}>面额</div>
                         <div className={styles.addCouponItemRight}>
-                            <input className={styles.addCouponItemRightTextShort} type="text" onChange={this.handlechange.bind(this, 'coupon_marketPrice', 2)} value={this.props.coupon_marketPrice} />
+                            <input className={styles.addCouponItemRightTextShort} type="text" onChange={this.handlechange.bind(this, 'coupon_denomination', 2)} value={this.props.coupon_denomination} />
                             <div className={styles.addCouponContentTitleleftUnit}>元</div>
                         </div>
                     </div>
@@ -163,24 +163,20 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                         </div>
                     </div>
                     <div className={styles.addCouponItem}>
+                        <div className={styles.addCouponItemLeft}>使用门槛</div>
+                        <div className={styles.addCouponItemRight}>
+                            <div className={styles.addCouponItemRightTextInfoL}>消费满</div>
+                            <input className={styles.addCouponItemRightTextMin} type="text" onChange={this.handlechange.bind(this, 'coupon_threshold', 2)} value={this.props.coupon_threshold} />
+                            <div className={styles.addCouponItemRightTextInfoR}>元可用</div>
+                        </div>
+                    </div>
+                    <div className={styles.addCouponItem}>
                         <div className={styles.addCouponItemLeft}>有效期</div>
                         <div className={styles.addCouponItemRight} onClick={() => { this.setState({ selectMonthShow: true }) }}>
                             <div className={styles.addCouponItemRightTextInfoL}>购劵日起</div>
                             <div className={styles.addCouponItemRightTextMin}>{this.props.coupon_validity ? this.props.coupon_validity : ''} </div>
                             <div className={styles.addCouponItemRightTextInfoR}>月有效</div>
                         </div>
-                    </div>
-                    <div className={styles.addCouponItem} onClick={() => { router.push('/activities/coupon/addCoupon/chooseCouponRules') }}>
-                        <div className={styles.addCouponItemLeft}>使用须知</div>
-                        {
-                            this.props.coupon_useNotice.length ? <div className={styles.addCouponItemRight}>
-                                <div className={styles.addCouponItemRightText}>已选择{this.props.coupon_useNotice.length}条</div>
-                            </div> : null
-                        }
-                    </div>
-                    <div className={styles.addCouponTextAreaBox}>
-                        <div className={styles.addCouponTextAreaTitle}>分享信息</div>
-                        <textarea className={styles.addCouponTextAreaContent} placeholder="请输入分享内容" onChange={this.handlechange.bind(this, 'coupon_shareInfo', 3)} value={this.props.coupon_shareInfo} />
                     </div>
                 </div>
                 <div className={styles.addCouponContent}>
