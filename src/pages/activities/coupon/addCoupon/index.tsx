@@ -16,8 +16,6 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
     }
     closeRules = () => { this.setState({ uploadImgRulesShow: false }) }
     selectMonth = (query: any) => {
-        console.log(query)
-        console.log(this.props)
         if (query != undefined) {
             this.props.dispatch({
                 type: 'addCoupon/setCoupon',
