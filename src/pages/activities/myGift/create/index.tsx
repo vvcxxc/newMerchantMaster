@@ -50,7 +50,11 @@ export default class CreateGift extends Component {
     const { type, is_show, limit_type, files } = this.state
     return (
       <div className={styles.create_page}>
-        <Header />
+        <Header title='添加礼品' rightRender={()=>{
+        return(
+        <div style={{color: '#fff'}}>33fasdas2323</div>
+        )
+        }}/>
         <div className={styles.create_main}>
 
           {/* 基本信息 */}
