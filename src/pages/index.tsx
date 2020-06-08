@@ -3,10 +3,15 @@
 import React, { Component } from 'react';
 import styles from './index.less';
 import { Flex, WingBlank, Icon, Toast, Grid, Modal } from 'antd-mobile';
+import router from 'umi/router';
 
 export default class Index extends Component {
   state = {
 
+  }
+
+  toAddGift = () => {
+    router.push('/activities/myGift/create')
   }
 
   render() {
@@ -30,6 +35,7 @@ export default class Index extends Component {
             <div>核销记录</div>
           </Flex>
         </Flex>
+        <div onClick={this.toAddGift}>跳转</div>
       </div>
     )
   }

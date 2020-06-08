@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styles from './index.less'
 import { Flex } from 'antd-mobile'
+import router from 'umi/router'
+import Prompt from 'umi/prompt';
 
 
 
@@ -16,7 +18,7 @@ export default function Header ({color='light', title='', style, rightRender}: P
   return (
     <div>
       <Flex className={styles.header_box} align='center' style={style} justify='between'>
-        <div>
+        <div onClick={()=>router.goBack()}>
           {
             color === 'light' ?
               <img src={require('@/assets/back_light.png')} className={styles.backImg} alt='' /> :
@@ -31,6 +33,13 @@ export default function Header ({color='light', title='', style, rightRender}: P
           {rightRender ? rightRender() : null}
         </div>
       </Flex>
+      <Prompt
+        when={true}
+        message={location => {
+          console.log('离开')
+          return window.confirm(`confirm to leave to ${location.pathname}?`);
+        }}
+      />
     </div>
   )
 }

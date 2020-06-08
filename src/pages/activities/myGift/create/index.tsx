@@ -14,6 +14,9 @@ export default class CreateGift extends Component {
     files: []
   }
 
+  componentDidMount() {
+  }
+
   // 选择卡券类型
   selectType = (type: number) => this.setState({ type })
   // 选择使用限制
@@ -46,15 +49,12 @@ export default class CreateGift extends Component {
 
   }
 
+
   render() {
     const { type, is_show, limit_type, files } = this.state
     return (
       <div className={styles.create_page}>
-        <Header title='添加礼品' rightRender={()=>{
-        return(
-        <div style={{color: '#fff'}}>33fasdas2323</div>
-        )
-        }}/>
+        <Header title='添加礼品' />
         <div className={styles.create_main}>
 
           {/* 基本信息 */}
