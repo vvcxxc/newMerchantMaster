@@ -168,7 +168,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(class createGroup exte
                             <div className={styles.addCouponItemRightTextInfoR}>月有效</div>
                         </div>
                     </div>
-                    <div className={styles.addCouponItem} onClick={() => { router.push('/activities/coupon/addCoupon/chooseCouponRules') }}>
+                    <div className={styles.addCouponItem} onClick={() => { router.push('/activities/coupon/add-coupon/choose-couponRules') }}>
                         <div className={styles.addCouponItemLeft}>使用须知</div>
                         {
                             this.props.coupon_useNotice.length ? <div className={styles.addCouponItemRight}>
