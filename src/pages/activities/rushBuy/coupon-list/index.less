@@ -1,7 +1,83 @@
 .list_page {
   width: 100%;
   height: 200%;
+  .header_icon {
+    font-size: 24px;
+    .icon_box {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid #4781FE;
+      box-sizing: border-box;
+      position: relative;
+
+    }
+    .icon_box::after {
+      content: '';
+      display: block;
+      width:20px;
+      height:4px;
+      background: #4781FE;
+      border-radius:2px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .icon_box::before {
+      content: '';
+      display: block;
+      width:4px;
+      height:20px;
+      background: #4781FE;
+      border-radius:2px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+  }
   .list {
     margin-top: 10px;
+  }
+  .add_mark {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .29);
+    z-index: 100;
+    .add_box {
+      width:678px;
+      height:463px;
+      background:rgba(255,255,255,1);
+      border-radius:50px;
+      .add_title {
+        font-size: 34px;
+        font-weight: bold;
+        width: 100%;
+        text-align: center;
+        margin: 55px 0 70px 0;
+      }
+      .add_item_activated {
+        width:576px;
+        height:88px;
+        background:rgba(71,129,254,1);
+        border-radius:44px;
+        font-size:34px;
+        margin-bottom: 23px;
+        color: #fff;
+      }
+      .add_item {
+        width:576px;
+        height:88px;
+        background:rgba(71,129,254,0.3);
+        border-radius:44px;
+        font-size:34px;
+      }
+    }
   }
 }
