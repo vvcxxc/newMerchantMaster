@@ -1,3 +1,4 @@
+
 import axios, { AxiosRequestConfig } from 'axios';
 import router from 'umi/router';
 import { Toast } from 'antd-mobile';
@@ -38,47 +39,3 @@ export default function request(options: Options) {
       return new Promise(() => { });
     });
 }
-
-// export default function request(options: Options) {
-//   const token = localStorage.getItem('token');
-//   options.url = options.host ? options.host + options.url : host + options.url;
-
-//   Axios.interceptors.request.use(function (config) {
-//     if (token) {
-//       config.headers.Authorization = token
-//     }
-//     return config
-//   }, function (error) {
-//     return Promise.reject(error)
-//   })
-
-//   if (options.method == "post") {
-//     Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-//     options.data = QS.stringify(options.data);
-//     return Axios(options)
-//       .then(res => res.data)
-//       .catch(err => {
-//         Toast.hide();
-//         if (err.response && err.response.status === 401) {
-//           router.push('/login');
-//         }
-//         if (err.response && err.response.status !== 401) {
-//           Toast.fail(err.response.data.message, 1);
-//         }
-//         return new Promise(() => { });
-//       });
-//   } else {
-//     return Axios(options)
-//       .then(res => res.data)
-//       .catch(err => {
-//         Toast.hide();
-//         if (err.response && err.response.status === 401) {
-//           router.push('/login');
-//         }
-//         if (err.response && err.response.status !== 401) {
-//           Toast.fail(err.response.data.message, 1);
-//         }
-//         return new Promise(() => { });
-//       });
-//   }
-// }

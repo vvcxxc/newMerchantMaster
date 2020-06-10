@@ -4,6 +4,7 @@ import ListItem from '../components/list-item'
 import Header from '@/components/header'
 import styles from './index.less'
 import { Flex } from 'antd-mobile'
+import router from 'umi/router'
 
 export default class CouponList extends Component {
   state = {
@@ -22,6 +23,13 @@ export default class CouponList extends Component {
   }
 
 
+  goToAdd = (type: string) => {
+    if(type === 'money'){
+      router.push('/activities/coupon/add-money')
+    }else {
+      router.push('/activities/coupon/add-coupon')
+    }
+  }
 
   render (){
     const { is_add } = this.state
@@ -42,8 +50,9 @@ export default class CouponList extends Component {
           is_add ? <Flex className={styles.add_mark} align='center' justify='center'>
           <Flex className={styles.add_box} direction='column' align='center'>
             <div className={styles.add_title}>请选择商品类型</div>
-            <Flex className={styles.add_item_activated} align='center' justify='center'>商品券</Flex>
-            <Flex className={styles.add_item} align='center' justify='center'>现金券</Flex>
+            <img src={require('@/assets/close.png')} alt="" onClick={()=>this.setState({is_add: false})}/>
+            <Flex className={styles.add_item_activated} onClick={this.goToAdd.bind(this,'coupon')} align='center' justify='center'>商品券</Flex>
+            <Flex className={styles.add_item} onClick={this.goToAdd.bind(this,'money')} align='center' justify='center'>现金券</Flex>
           </Flex>
         </Flex> : null
         }

@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2020-05-20 15:52:39
+ * @LastEditTime: 2020-06-10 11:44:05
+ * @LastEditors: your name
+ * @Description: In User Settings Edit
+ * @FilePath: \newMerchantMaster\.umirc.master.ts
+ */
 import { IConfig } from "umi-types";
 
 const config: IConfig = {
@@ -24,12 +32,7 @@ const config: IConfig = {
     });
   },
   define: {
-    "window.api": "http://api.supplier.tdianyi.com/",
-    "window.open_id": "open_id",
-    "window.url": "http://release.api.tdianyi.com/",
-    "window.from": "http://supplier.tdianyi.com/",
-    "window.pay_url": "http://api.tdianyi.com/payCentre/toSupplierWxPay",
-    "window.service_url": "http://mall.tdianyi.com/pages/mycardticket/index",
+    "window.api": "http://test.bruin_shop.api.tdianyi.com",
     "Environment": "master"
   },
   chainWebpack: function (config, { webpack }) {

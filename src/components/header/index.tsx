@@ -34,7 +34,7 @@ export default function Header ({color='light', title='', style, rightRender}: P
         </div>
       </Flex>
       <Prompt
-        when={true}
+        when={false}
         message={location => {
           console.log('离开')
           return window.confirm(`confirm to leave to ${location.pathname}?`);

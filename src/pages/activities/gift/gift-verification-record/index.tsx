@@ -14,7 +14,7 @@ export default class GiftVerificationRecord extends Component<any> {
         return (
             <div className={styles.giftVerificationRecord}>
                 <div className={styles.verificationItem}>
-                    <img className={styles.verificationImg} src="http://oss.tdianyi.com/front/36DfKaXdP8ea7SRcCXT8neArCE2YB76N.png" />
+                    <img className={styles.verificationImg} alt='' src="http://oss.tdianyi.com/front/36DfKaXdP8ea7SRcCXT8neArCE2YB76N.png" />
                     <div className={styles.verificationItemRight}>
                         <div className={styles.ItemTopBox}>
                             <div className={styles.ItemTopTitle}>券的名称券的名称券的名称券的名称券的名称</div>
@@ -26,7 +26,7 @@ export default class GiftVerificationRecord extends Component<any> {
                 </div>
 
                 <div className={styles.verificationItem}>
-                    <img className={styles.verificationImg} src="http://oss.tdianyi.com/front/36DfKaXdP8ea7SRcCXT8neArCE2YB76N.png" />
+                    <img className={styles.verificationImg} alt='' src="http://oss.tdianyi.com/front/36DfKaXdP8ea7SRcCXT8neArCE2YB76N.png" />
                     <div className={styles.verificationItemRight}>
                         <div className={styles.ItemTopBox}>
                             <div className={styles.ItemTopTitle}>券的名称券的名称券的名称券的名称券的名称</div>

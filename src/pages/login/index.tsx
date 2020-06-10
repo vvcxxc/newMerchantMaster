@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styles from './index.less'
 import { Toast, Flex } from 'antd-mobile'
+import { sendVerificationCode, verifyPhoneCode, phoneLogin } from './service'
+import router from 'umi/router';
 
 let timer = null;
 export default class Login extends Component {
@@ -12,7 +14,11 @@ export default class Login extends Component {
     blink_idx: null, // 光标位置
     is_confirm: false, // 确认按钮颜色
     step: 1, // 登录步骤1是输入手机号，2是输入验证码
-    time: 5
+    time: 5,
+    code_key: '', // 校验短信需要
+    expired_at: '', // 验证码有效期
+    permitCode: '', // 短信校验通过码,所有需要验证短信接口需要
+
   }
   input = React.createRef();
 
@@ -36,18 +42,32 @@ export default class Login extends Component {
 
   sendCode = () => {
     const { phone } = this.state
+    if (phone) {
+      Toast.loading('')
+      sendVerificationCode(phone).then(res => {
+        Toast.hide()
+        this.countDown()
+        this.setState({
+          code_key: res.data.code_key,
+          expired_at: res.data.expired_at,
+          step: 2,
+          code: '',
+          code_list: ['', '', '', '', '', ''],
+          is_confirm: false
+        }, () => {
+          this.input.current.focus();
+          const { code } = this.state
+          this.setState({ blink_idx: code.length })
+        })
+      }).catch(err => {
+        Toast.hide()
+      })
 
-    this.countDown()
-    this.setState({
-      step: 2,
-      code: '',
-      code_list: ['', '', '', '', '', ''],
-      is_confirm: false
-    }, () => {
-      this.input.current.focus();
-      const { code } = this.state
-      this.setState({ blink_idx: code.length })
-    })
+
+    } else {
+      Toast.fail('请输入手机号')
+    }
+
   }
 
   codeChange = (e) => {
@@ -91,6 +111,25 @@ export default class Login extends Component {
     }
   }
 
+  login = () => {
+    const { code, code_key } = this.state
+    Toast.loading('登录中')
+    verifyPhoneCode(code_key, code).then(res => {
+      let permitCode = res.data.permitCode
+      phoneLogin(permitCode).then(res => {
+        Toast.hide()
+        localStorage.setItem('token', 'Bearer ' +  res.data.access_token)
+        router.push('/')
+      }).catch(err => {
+        Toast.hide()
+        Toast.fail(err.message)
+      })
+    }).catch(err => {
+      Toast.hide()
+      Toast.fail(err.message)
+    })
+  }
+
 
   componentWillUnmount() {
     clearInterval(timer)
@@ -121,7 +160,7 @@ export default class Login extends Component {
               <div className={styles.code_page} onClick={this.onBlur}>
                 <img className={styles.back_img} src={require('@/assets/back_dark.png')} alt="" onClick={() => this.setState({ step: 1 })} />
                 <div className={styles.code_title}>请输入短信验证码</div>
-          <div className={styles.code_phone}>短信验证码至   {phone.substring(0,3)}******{phone.substring(phone.length-2,phone.length)}</div>
+                <div className={styles.code_phone}>短信验证码至   {phone.substring(0, 3)}******{phone.substring(phone.length - 2, phone.length)}</div>
                 <Flex className={styles.code_box} onClick={this.focus}>
                   {
                     code_list.map((item, index) => {
@@ -141,10 +180,10 @@ export default class Login extends Component {
 
                 <div className={styles.button_box}>
                   {
-                    is_confirm ? <Flex className={styles.button} style={{ opacity: 1 }} align='center' justify='center'>
+                    is_confirm ? <Flex className={styles.button} style={{ opacity: 1 }} align='center' justify='center' onClick={this.login}>
                       确认
                       </Flex> : <Flex className={styles.button} align='center' justify='center'>
-                      确认
+                        确认
                       </Flex>
                   }
 

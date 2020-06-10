@@ -1,7 +1,193 @@
 .page {
-    background: #f7f6fb;
+  .bj {
+    width: 100%;
+    height: 70px;
+    background:rgba(39,51,232,1);
+  }
+  .main {
     height: 100%;
+    background-image: url(@/assets/index/bj.png);
+    background-repeat: no-repeat;
+    // background-position-y: 128px;
+    background-size: 100%;
+    overflow: hidden;
+    padding: 0 26px;
+  }
+
     .index_top {
-        font-size: 28px;
+      margin-top: 22px;
+      font-size: 28px;
+      color: #fff;
+      padding-bottom: 43px;
+      .index_top_item {
+        width: 130px;
+        img {
+          width: 61px;
+          height: 61px;
+          margin-bottom: 26px;
+        }
+        div {
+          line-height: 1;
+        }
+      }
     }
+
+    .audit_box {
+      width:699px;
+      min-height:341px;
+      height: auto;
+      background:rgba(255,255,255,1);
+      border-radius:30px 30px 4px 4px;
+      line-height: 1;
+      padding: 39px 23px 0 23px;
+      box-sizing: border-box;
+      .audit_box_title {
+        font-size: 34px;
+        color: #333;
+        padding-left: 12px;
+      }
+      .audit_box_tips {
+        font-size: 28px;
+        color: #999999;
+        padding-left: 12px;
+        margin-top: 25px;
+      }
+      .audit_record_box {
+        margin-top: 50px;
+        .audit_item_title {
+          font-size: 24px;
+          color: #fff;
+          margin-left: 50px;
+          margin-top: 12px;
+        }
+        .audit_item_text {
+          font-size: 30px;
+          color: #333;
+          margin-top: 41px;
+          margin-left: 29px;
+        }
+        .audit_store_item {
+          width: 165px;
+          height: 130px;
+          background: url(@/assets/index/store_audit.png) no-repeat;
+          background-size: 100%;
+
+        }
+        .audit_license_item {
+          width: 165px;
+          height: 130px;
+          background: url(@/assets/index/license_audit.png) no-repeat;
+          background-size: 100%;
+          .audit_item_title {
+            margin-left: 56px;
+          }
+        }
+        .audit_id_card_item {
+          width: 165px;
+          height: 130px;
+          background: url(@/assets/index/idcard_audit.png) no-repeat;
+          background-size: 100%;
+          .audit_item_title {
+            margin-left: 56px;
+          }
+        }
+      }
+
+      .audit_button_box {
+        width: 100%;
+        height: 64px;
+        padding: 35px 0;
+        box-sizing: content-box;
+        .audit_button {
+          width:290px;
+          height:64px;
+          background:rgba(71,129,253,1);
+          border-radius:32px;
+          font-size: 26px;
+          color: #fff;
+          padding: 0 24px;
+          img {
+            width: 40px;
+            height: 40px;
+          }
+        }
+      }
+
+    }
+
+    .no_store_box {
+      width: 100%;
+      height: 131px;
+      background: url('@/assets/index/no-store.png') no-repeat;
+      background-size: 100%;
+      margin-top: 35px;
+      line-height: 1;
+      position: relative;
+      .no_store_tips {
+        font-size: 32px;
+        color: #fff;
+        position: absolute;
+        top: 48px;
+        left: 35px;
+      }
+      .no_store_button {
+        font-size: 36px;
+        color: #fff;
+        position: absolute;
+        top: 52px;
+        right: 35px;
+      }
+    }
+
+    .content_box {
+      width: 100%;
+      height: auto;
+      padding: 30px 40px;
+      background: #fff;
+      border-radius:4px;
+      margin-top: 28px;
+      line-height: 1;
+      .title {
+        font-size: 34px;
+        .time_box {
+          font-size: 28px;
+          color: #656565;
+          width: 250px;
+        }
+      }
+      .business_box {
+        margin-top: 40px;
+        .business_item {
+          width: 130px;
+          font-size: 28px;
+          color: #333;
+          img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+          }
+        }
+
+      }
+      .record_box {
+        margin-top: 30px;
+        .record_item {
+          width:300px;
+          height:187px;
+          background:rgba(253,245,235,1);
+          border-radius:10px;
+          .record_number {
+            font-size: 48px;
+            color: #000;
+            font-weight: bold;
+            margin-bottom: 24px;
+          }
+          .record_title {
+            font-size: 28px;
+            color: #656565;
+          }
+        }
+      }
+    }
+
 }
