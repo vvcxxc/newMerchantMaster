@@ -14,6 +14,11 @@ export default class Index extends Component {
     router.push('/activities/myGift/create')
   }
 
+  toCreateStore = () => {
+
+    router.push('/SubmitQualifications/map')
+  }
+
   render() {
     return (
       <div className={styles.page}>
@@ -68,7 +73,7 @@ export default class Index extends Component {
 
           <div className={styles.no_store_box}>
             <div className={styles.no_store_tips}>您没有入驻门店哦！</div>
-            <div className={styles.no_store_button}>入驻门店 >></div>
+            <div className={styles.no_store_button} onClick={this.toCreateStore}>入驻门店 >></div>
           </div>
 
 

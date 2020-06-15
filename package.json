@@ -11,6 +11,7 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "0.0.1",
     "@sentry/browser": "^5.11.1",
     "@types/js-cookie": "^2.2.4",
     "@types/recharts": "^1.8.1",
