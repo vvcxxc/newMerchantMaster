@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
 import styles from './index.less'
+import { Flex, PickerView } from 'antd-mobile'
 import { Map, Marker, MouseTool } from 'react-amap';
 import wx from "weixin-js-sdk";
 import getWxSign from '@/services/getwxSign'
+import request from '@/services/request';
+import SelectCity from '@/components/selectCity'
 
 declare let AMap: any;
 
+
+
 export default class MapPage extends Component<any> {
   geocoder: any
+  mapSearch: any
   events = {
     created: (instance: any) => {
       console.log(this, 'this')
@@ -28,15 +34,13 @@ export default class MapPage extends Component<any> {
         });
         instance.addControl(geolocation);
         geolocation.getCurrentPosition();
-
+        AMap.plugin('AMap.PlaceSearch')
         AMap.plugin('AMap.Geocoder', () => {
           _this.geocoder = new AMap.Geocoder({
             city: "010"//城市，默认：“全国”
           })
         })
 
-        // AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-        // AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
       });
     },
     click: (e: any) => {
@@ -61,11 +65,23 @@ export default class MapPage extends Component<any> {
     location: {
       latitude: 23.106321,
       longitude: 113.324518,
-    }
+    },
+    city_list: []
   }
 
   componentDidMount() {
 
+    request({
+      url: '/json/regions',
+      method: 'GET'
+    }).then(res => {
+      // let list = JSON.stringify(res.data)
+      // let a = list.replace(/name/g, "label")
+      // let b = a.replace(/id/g, "value")
+      // let c = b.replace(/city/g, "children")
+      // console.log(JSON.parse(c))
+      this.setState({ city_list: res.data })
+    })
 
     getWxSign().then(res => {
       wx.config({
@@ -88,7 +104,7 @@ export default class MapPage extends Component<any> {
               latitude: res.latitude,
               longitude: res.longitude
             }
-            // this.setState({location})
+            this.setState({ location })
 
           }
         })
@@ -99,12 +115,25 @@ export default class MapPage extends Component<any> {
     })
   }
 
+  inputChange = (e: any) => {
+    console.log(e.target.value)
+    const value = e.target.value
+    this.mapSearch = new AMap.PlaceSearch({
+      pageSize: 10,
+      pageIndex: 1,
+      city: '广州'
+      // city: this.state.city_name //城市
+    });
+    this.mapSearch.search(value, (status, result) => {
+      console.log(status, result)
+    })
+  }
 
   render() {
 
     const { location } = this.state
     const plugins = [
-      'Scale',
+      // 'Scale',
       {
         name: 'ToolBar',
         options: {
@@ -116,16 +145,30 @@ export default class MapPage extends Component<any> {
     return (
       <div className={styles.map_page}>
         <div id='container' className={styles.container}>
-          <div className={styles.search_box}>213</div>
+          <Flex className={styles.search_box}>
+            <Flex className={styles.select_city}>
+              广州市
+              <img src={require('@/assets/down.png')} alt="" />
+            </Flex>
+            <div className={styles.input_box}>
+              <input type="text" onChange={this.inputChange} />
+            </div>
+          </Flex>
           <div className={styles.map_box}>
             <Map version={'1.4.15'} center={location} events={this.events} amapkey={'47d12b3485d7ded218b0d369e2ddd1ea'} zoom={16} plugins={plugins} >
-              <Marker position={location} />
+              {
+                location ? <Marker position={location} /> : null
+              }
+
             </Map>
           </div>
 
           <div className={styles.address_box}>
 
           </div>
+          <SelectCity list={this.state.city_list}/>
+
+
         </div>
       </div>
     )

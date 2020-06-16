@@ -1,0 +1,54 @@
+.select_city_box {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 130vw;
+  background: #fff;
+  border-radius: 3vw 3vw 0 0;
+  padding: 0 4vw;
+  .picker_buttons {
+    position: absolute;
+    top: 3vw;
+    right: 3vw;
+    width: 4vw;
+    height: 4vw;
+    img {
+      width: 4vw;
+      height: 4vw;
+    }
+  }
+  .select_tab {
+    height: 15vw;
+    z-index: 99;
+    position: relative;
+    &_item {
+      font-size: 4.5vw;
+      margin-right: 3vw;
+      position: relative;
+      height: 6vw;
+      &_selected {
+        position: absolute;
+        bottom: -2vw;
+        width: 8vw;
+        height: 1vw;
+        left: 50%;
+        border-radius: 1vw;
+        transform: translateX(-50%);
+        background: #4781FE;
+      }
+    }
+
+    padding-bottom: 2vw;
+  }
+
+  .city_box {
+    font-size: 4vw;
+    overflow: auto;
+    height: 105vw;
+    &_item {
+      height: 6vw;
+    }
+  }
+
+}
