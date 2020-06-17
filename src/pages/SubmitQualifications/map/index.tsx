@@ -227,6 +227,7 @@ export default class MapPage extends Component<any> {
             if (city_list[a].name == city) {
               value.city.id = city_list[a].id
               value.city.name = city_list[a].name
+
             }
           }
         }
