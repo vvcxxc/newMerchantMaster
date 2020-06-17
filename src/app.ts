@@ -41,7 +41,6 @@ export const onRouteChange = (params: { location: any, routes: any }) => {
     const router = routerConfig.find((_: any) => _.path === path)
     window.title = router.title || defaultTitle
     // return params.routes
-    console.log(document.getElementsByTagName('meta')[1].content)
     if(document.getElementsByTagName('meta')[1].content !== 'initial-scale=1.0, user-scalable=no'){
       sessionStorage.setItem('meta',document.getElementsByTagName('meta')[1].content)
     }
