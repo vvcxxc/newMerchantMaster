@@ -16,6 +16,7 @@ export default class Index extends Component {
       if(res.data.status){
         getAuditRecord(res.data.id).then(res => {
           console.log(res,333)
+          this.setState({is_record: true})
         })
       }else {
         this.setState({is_record: false})

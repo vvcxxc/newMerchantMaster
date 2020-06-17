@@ -64,7 +64,7 @@ export default function AuditResult({is_record}: Props) {
 
       </div> :  <div className={styles.no_store_box}>
         <div className={styles.no_store_tips}>您没有入驻门店哦！</div>
-        <div className={styles.no_store_button} onClick={toCreateStore}>入驻门店 >></div>
+        <div className={styles.no_store_button} onClick={toCreateStore}>入驻门店 &gt;&gt;</div>
       </div>
 
       }

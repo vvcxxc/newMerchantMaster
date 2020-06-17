@@ -18,15 +18,22 @@
       align-items: center;
       background: #fff;
       position: absolute;
-      border-radius: 10px;
-      border: 1px solid #000;
+      border-radius: 6px;
+      // border: 1px solid #000;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 999;
+      overflow: inherit;
 
       .select_city {
         width: 23vw;
+
+        .city_name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
 
         img {
           width: 4vw;
@@ -40,6 +47,42 @@
 
         input {
           width: 100%;
+        }
+      }
+
+      .search_list {
+        width: 94vw;
+        height: 70vh;
+        background: #fff;
+        position: absolute;
+        top: 12vw;
+        left: 0;
+        z-index: 999;
+        padding: 0 4vw;
+        overflow: auto;
+
+        .search_item {
+          width: 100%;
+          height: 9.5vh;
+          border-bottom: 1px solid #eee;
+
+          img {
+            width: 4vw;
+            margin-right: 3vw;
+          }
+
+          .address_name {
+            font-weight: bold;
+            font-size: 4.2vw;
+          }
+
+          .address {
+            font-size: 3.8vw;
+            color: #999;
+            width: 75vw;
+            overflow: auto;
+            max-height: 6vh;
+          }
         }
       }
     }
@@ -59,6 +102,30 @@
       position: absolute;
       bottom: 0;
       z-index: 999;
+      padding: 0 8vw 0 4.5vw;
+
+      .address {
+        font-size: 3.5vw;
+        width: 65vw;
+        color: #999;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .address_name {
+          font-size: 4vw;
+          font-weight: bold;
+          color: #333;
+        }
+      }
+
+      .address_button {
+        width: 18.8vw;
+        height: 7vw;
+        background: #4781FE;
+        color: #fff;
+        font-size: 4vw;
+        border-radius: 1.5vw;
+      }
     }
 
 
