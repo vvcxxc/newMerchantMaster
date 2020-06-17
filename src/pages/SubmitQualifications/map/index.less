@@ -1,0 +1,69 @@
+@picker-item-height: 8vw;
+
+.map_page {
+  width: 100%;
+  height: 100%;
+
+  .container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .search_box {
+      width: 94vw;
+      height: 13vw;
+      font-size: 4vw;
+      padding: 0 3vw;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      position: absolute;
+      border-radius: 10px;
+      border: 1px solid #000;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+
+      .select_city {
+        width: 23vw;
+
+        img {
+          width: 4vw;
+          height: 4vw;
+          margin-left: 1vw;
+        }
+      }
+
+      .input_box {
+        flex: 1;
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+    .map_box {
+      width: 100%;
+      height: calc(100vh - 19vw);
+      z-index: 99;
+    }
+
+    .address_box {
+      width: 100vw;
+      height: 19vw;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      position: absolute;
+      bottom: 0;
+      z-index: 999;
+    }
+
+
+
+  }
+
+
+}

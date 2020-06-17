@@ -4,17 +4,33 @@ import React, { Component } from 'react';
 import styles from './index.less';
 import { Flex, WingBlank, Icon, Toast, Grid, Modal } from 'antd-mobile';
 import router from 'umi/router';
-
+import AuditResult from '@/components/auditResult'
+import {getAuditId, getAuditRecord} from '@/services/api'
 export default class Index extends Component {
   state = {
+    is_record: true, // 是否有审核记录
+  }
 
+  componentDidMount (){
+    getAuditId().then(res => {
+      if(res.data.status){
+        getAuditRecord(res.data.id).then(res => {
+          console.log(res,333)
+        })
+      }else {
+        this.setState({is_record: false})
+      }
+    })
   }
 
   toAddGift = () => {
     router.push('/activities/myGift/create')
   }
 
+
+
   render() {
+    const { is_record } = this.state
     return (
       <div className={styles.page}>
         <div className={styles.bj}></div>
@@ -38,38 +54,7 @@ export default class Index extends Component {
             </Flex>
           </Flex>
 
-          {/* <div className={styles.audit_box}>
-          <div className={styles.audit_box_title}>资料审核中</div>
-          <div className={styles.audit_box_tips}>请留意短信提醒，3个工作日出结果</div>
-
-          <Flex className={styles.audit_record_box} justify='between'>
-            <div className={styles.audit_store_item}>
-              <div className={styles.audit_item_title}>门店信息</div>
-              <div className={styles.audit_item_text}>审核通过</div>
-            </div>
-            <div className={styles.audit_license_item}>
-              <div className={styles.audit_item_title}>营业执照</div>
-              <div className={styles.audit_item_text}>审核通过</div>
-            </div>
-            <div className={styles.audit_id_card_item}>
-              <div className={styles.audit_item_title}>身份证</div>
-              <div className={styles.audit_item_text}>审核通过</div>
-            </div>
-          </Flex>
-
-          <Flex className={styles.audit_button_box} align='center' justify='center'>
-            <Flex className={styles.audit_button} justify='between'>
-              查看原因并修改
-              <img src={require('@/assets/index/right-arrow.png')} alt=""/>
-            </Flex>
-          </Flex>
-
-        </div> */}
-
-          <div className={styles.no_store_box}>
-            <div className={styles.no_store_tips}>您没有入驻门店哦！</div>
-            <div className={styles.no_store_button}>入驻门店 >></div>
-          </div>
+          <AuditResult is_record={is_record} />
 
 
           <div className={styles.content_box}>
