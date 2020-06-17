@@ -50,7 +50,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(
                         return (
                             <div className={styles.CouponRulesItem} key={item.id}>
                                 <div className={styles.CouponRulesText}>{item.value}</div>
-                                <div className={item.select ? styles.CouponRulesBtnSelect : styles.CouponRulesBtn} onClick={handleSelect.bind(this, index)}>
+                                <div className={item.select ? styles.CouponRulesBtnSelect : styles.CouponRulesBtn} onClick={() => handleSelect.bind(index)}>
                                     <div className={styles.CouponRulesBtnCircle}></div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@ export default connect(({ addCoupon }: any) => addCoupon)(
                     })
                 }
                 <div className={styles.CouponRulesInputBox}>
-                    <input className={styles.CouponRulesInputInput} value={inputText} onChange={changeInput.bind(this)} placeholder="自定义" />
+                    <input className={styles.CouponRulesInputInput} value={inputText} onChange={(e) => changeInput(e)} placeholder="自定义" />
                     <div className={styles.CouponRulesInputBtn} onClick={addSelect}>添加</div>
                 </div>
             </div>

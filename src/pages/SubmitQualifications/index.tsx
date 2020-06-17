@@ -1,5 +1,5 @@
 /**
- * 创建门店测试版
+ * 创建门店
  */
 import React, { Component } from 'react';
 import { Flex, WingBlank, Button, Toast, Picker, List, Icon, ImagePicker, ActionSheet } from 'antd-mobile';
@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 import ExampleImg from '../../components/example/index'
 import axios from 'axios';
 import wx from 'weixin-js-sdk';
+import Header from '@/components/header'
 
 export default class SubmitQualifications extends Component {
     state = {
@@ -35,11 +36,19 @@ export default class SubmitQualifications extends Component {
         exampleImgUrlType: '',
         actionSheetShow: false,
         data: {
+            store_address: '',
+            province_id: 0,
+            city_id: 0,
+            county_id: 0,
+            lng: 0,
+            lat: 0,
+
             storeName: '',
             storeAddress: '',
             storeHouseNumber: '',
             phone: '',
             manage_list_value: 0,//经营分类id
+            manage_type: '',
             selector: '',//经营分类文字
             storesMails: '',
             storePhoto: '',
@@ -79,55 +88,56 @@ export default class SubmitQualifications extends Component {
         ToastTipsBusinessDate: "",
     }
     componentDidMount() {
+        this.setState({ tabCurrent: this.props.location.query.tabCurrent || 0 })
         this.getOldData();
         this.getManageType();
-        this.getLocation();
+        // this.getLocation();
     }
-    getLocation() {
-        let userAgent = navigator.userAgent;
-        let isIos = userAgent.indexOf('iPhone') > -1;
-        let url: any;
-        if (isIos) {
-            url = sessionStorage.getItem('url');
-        } else {
-            url = location.href;
-        }
-        request({
-            url: 'wechat/getShareSign',
-            method: 'get',
-            params: {
-                url
-            }
-        }).then(res => {
-            let _this: any = this;
-            wx.config({
-                debug: false,
-                appId: res.appId,
-                timestamp: res.timestamp,
-                nonceStr: res.nonceStr,
-                signature: res.signature,
-                jsApiList: [
-                    "getLocation",
-                    "openLocation"
-                ]
-            });
-            wx.ready(() => {
-                wx.getLocation({
-                    type: 'wgs84',
-                    success: function (res: any) {
-                        let latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                        let longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                        let location = {
-                            latitude,
-                            longitude
-                        };
-                        _this.setState({ location });
-                    }
-                });
+    // getLocation() {
+    //     let userAgent = navigator.userAgent;
+    //     let isIos = userAgent.indexOf('iPhone') > -1;
+    //     let url: any;
+    //     if (isIos) {
+    //         url = sessionStorage.getItem('url');
+    //     } else {
+    //         url = location.href;
+    //     }
+    //     request({
+    //         url: 'wechat/getShareSign',
+    //         method: 'get',
+    //         params: {
+    //             url
+    //         }
+    //     }).then(res => {
+    //         let _this: any = this;
+    //         wx.config({
+    //             debug: false,
+    //             appId: res.appId,
+    //             timestamp: res.timestamp,
+    //             nonceStr: res.nonceStr,
+    //             signature: res.signature,
+    //             jsApiList: [
+    //                 "getLocation",
+    //                 "openLocation"
+    //             ]
+    //         });
+    //         wx.ready(() => {
+    //             wx.getLocation({
+    //                 type: 'wgs84',
+    //                 success: function (res: any) {
+    //                     let latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+    //                     let longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+    //                     let location = {
+    //                         latitude,
+    //                         longitude
+    //                     };
+    //                     _this.setState({ location });
+    //                 }
+    //             });
 
-            })
-        });
-    }
+    //         })
+    //     });
+    // }
     changeTabCurrent = (current: number) => {
         this.setState({ tabCurrent: current })
     }
@@ -138,7 +148,7 @@ export default class SubmitQualifications extends Component {
     /**获取经营品类 */
     getManageType = () => {
         request({
-            url: 'v3/manage_type',
+            url: '/supplier/store/category',
             method: 'get',
         }).then(res => {
             let { data } = res;
@@ -226,41 +236,61 @@ export default class SubmitQualifications extends Component {
 
     getOldData = () => {
         let that = this;
+        Toast.loading('');
         request({
-            url: 'v3/payment_profiles',
+            url: '/supplier/store/examines/recent/record',
             method: 'get'
         }).then(res => {
-            let { data } = res;
-            let temp = {
-                storeName: '?',
-                storeAddress: '?',
-                storeHouseNumber: '?',
-                phone: '?',
-                manage_type: '?',
-                selector: '?',
-                storesMails: '?',
-                storePhoto: '?',
-                environmentPhoto1: '?',
-                environmentPhoto2: '?',
+            Toast.hide();
+            if (res.data && res.data.id) {
+                request({
+                    url: 'admin/store/examines',
+                    method: 'get'
+                }).then(res => {
+                    let { data } = res;
+                    let temp = {
+                        store_address: '',
+                        province_id: 0,
+                        city_id: 0,
+                        county_id: 0,
+                        lng: 0,
+                        lat: 0,
 
-                idCardimg1: data.legal_id_front_img.split('http://oss.tdianyi.com/')[1],
-                idCardimg2: data.legal_id_back_img.split('http://oss.tdianyi.com/')[1],
-                idCardimg3: data.hand_hold_id_img.split('http://oss.tdianyi.com/')[1],
-                name: data.contact_name,
-                idCardNum: data.legal_id_no,
-                idCardValidity: data.legal_id_valid_date,
+                        storeName: '?',
+                        storeAddress: '?',
+                        storeHouseNumber: '?',
+                        phone: '?',
+                        manage_type: '?',
+                        selector: '?',
+                        storesMails: '?',
+                        storePhoto: '?',
+                        environmentPhoto1: '?',
+                        environmentPhoto2: '?',
 
-                businessLicenseimg: data.three_certs_in_one_img.split('http://oss.tdianyi.com/')[1],
-                registrationNumber: data.three_certs_in_one_no,
-                licenseName: data.corn_bus_name,
-                legalPerson: data.legal_name,
-                businessLicenseValidity: data.three_certs_in_one_valid_date,
-            };
-            that.setState({ data: temp }, () => {
+                        idCardimg1: data.legal_id_front_img.split('http://oss.tdianyi.com/')[1],
+                        idCardimg2: data.legal_id_back_img.split('http://oss.tdianyi.com/')[1],
+                        idCardimg3: data.hand_hold_id_img.split('http://oss.tdianyi.com/')[1],
+                        name: data.contact_name,
+                        idCardNum: data.legal_id_no,
+                        idCardValidity: data.legal_id_valid_date,
+
+                        businessLicenseimg: data.three_certs_in_one_img.split('http://oss.tdianyi.com/')[1],
+                        registrationNumber: data.three_certs_in_one_no,
+                        licenseName: data.corn_bus_name,
+                        legalPerson: data.legal_name,
+                        businessLicenseValidity: data.three_certs_in_one_valid_date,
+                    };
+                    that.setState({ data: temp }, () => {
+                        that.getStroage();
+                    })
+                }).catch((err) => {
+                    that.getStroage();
+                })
+            } else {
                 that.getStroage();
-            })
-
+            }
         }).catch((err) => {
+            Toast.hide();
             that.getStroage();
         })
     }
@@ -295,7 +325,7 @@ export default class SubmitQualifications extends Component {
         }
     }
     //取消图片
-    onCloseImg = (filesType: string, imgUrlType: string, ) => {
+    onCloseImg = (filesType: string, imgUrlType: string,) => {
         let data = { ...this.state.data, [imgUrlType]: '' };
         this.setStroage(data);
         this.setState({ [filesType]: [], data })
@@ -339,12 +369,19 @@ export default class SubmitQualifications extends Component {
         if (localStorage.getItem('SubmitQualificationsTime') && (new Date().getTime() - JSON.parse(localStorage.getItem('SubmitQualificationsTime')) < 86400000)) {
             let stroage: any = JSON.parse(localStorage.getItem('SubmitQualifications'));
             let tempData = {
+                store_address: '',
+                province_id: 0,
+                city_id: 0,
+                county_id: 0,
+                lng: 0,
+                lat: 0,
                 //门店信息
                 storeName: '',
                 storeAddress: '',
                 storeHouseNumber: '',
                 phone: '',
                 manage_type: '',
+                manage_list_value: 0,
                 selector: '',
                 storesMails: '',
                 storePhoto: '',
@@ -478,12 +515,18 @@ export default class SubmitQualifications extends Component {
             ToastTipsBusinessDate: "",
         })
         const {
+            store_address,
+            province_id,
+            city_id,
+            county_id,
+            lng,
+            lat,
             //门店
             storeName,
             storeAddress,
             storeHouseNumber,
             phone,
-            manage_type,
+            manage_list_value,
             storesMails,
             storePhoto,
             environmentPhoto1,
@@ -504,6 +547,8 @@ export default class SubmitQualifications extends Component {
             businessLicenseValidity
         } = this.state.data;
 
+        console.log(businessLicenseValidity, idCardValidity)
+
 
         let total: any = {}
         if (this.getBytes(storeName)) {
@@ -518,7 +563,7 @@ export default class SubmitQualifications extends Component {
         if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
             this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
         }
-        if (!manage_type) {
+        if (!manage_list_value) {
             this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
         }
         if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
@@ -602,6 +647,13 @@ export default class SubmitQualifications extends Component {
             })
         }
 
+        // 身份证姓名对比用户法人姓名
+        if (name != legalPerson) {
+            this.setState({
+                ToastTipsContactName: "用户身份证姓名和用户法人姓名不一致"
+            })
+        }
+
         // 营业执照有效期
         const businessNowTimeStamp = Date.now();
         const businessNow = new Date(businessNowTimeStamp);
@@ -627,6 +679,39 @@ export default class SubmitQualifications extends Component {
             }
         }
         //请求
+        request({
+            url: '/supplier/store/examines',
+            method: 'POST',
+            data: {
+                environmental_photo: [environmentPhoto1, environmentPhoto2],
+                store_name: storeName,
+                store_address,
+                store_address_info: storeAddress,
+                province_id,
+                city_id,
+                county_id,
+                store_telephone: phone,
+                category_id: manage_list_value,
+                door_photo: storePhoto,
+                lng,
+                lat,
+                business_license_photo: businessLicenseimg,
+                registration_number: registrationNumber,
+                license_name: licenseName,
+                legal_person_name: legalPerson,
+                is_license_long_time: businessLicenseValidity == '长期' ? 1 : 0,
+                license_valid_until: businessLicenseValidity,
+                identity_card_positive_image: idCardimg1,
+                identity_card_opposite_image: idCardimg2,
+                identity_card_handheld_image: idCardimg3,
+                identity_name: name,
+                identity_card: idCardNum,
+                is_identity_card_long_time: idCardValidity == '长期' ? 1 : 0,
+                identity_card_valid_until: idCardValidity,
+                email: storesMails,
+            }
+        }).then(res => { })
+
 
         localStorage.removeItem('SubmitQualifications');
 
@@ -660,6 +745,7 @@ export default class SubmitQualifications extends Component {
 
         return (
             <div className={styles.creatStorePage} >
+                <Header title='创建门店' color='dark' />
                 <div className={tabCurrent == 1 ? styles.tabContent2 : tabCurrent == 2 ? styles.tabContent3 : styles.tabContent1}> </div>
                 {
                     tabCurrent == 0 ?
@@ -997,7 +1083,7 @@ export default class SubmitQualifications extends Component {
                             <div className={styles.bottomBoxTypeContent}>
                                 {
                                     this.state.manage_list.map((item: any, index: any) => {
-                                        return (<div className={item.id == this.state.tempmanage_list_value ? styles.bottomBoxTypeItemSelset : styles.bottomBoxTypeItem} key={item.id} onClick={this.tempCheckout.bind(this, item.id, item.label)}>{item.label}</div>)
+                                        return (<div className={item.id == this.state.tempmanage_list_value ? styles.bottomBoxTypeItemSelset : styles.bottomBoxTypeItem} key={item.id} onClick={this.tempCheckout.bind(this, item.id, item.name)}>{item.name}</div>)
                                     })
                                 }
                             </div>

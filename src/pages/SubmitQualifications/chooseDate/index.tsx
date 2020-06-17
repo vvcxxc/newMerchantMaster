@@ -8,6 +8,7 @@ import moment from 'moment';
 import { connect } from 'dva';
 import router from 'umi/router';
 import Cookies from 'js-cookie';
+import Header from '@/components/header'
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -113,6 +114,7 @@ export default connect(({ submitQua }: any) => submitQua)(
 
       return (
         <div style={{ width: '100%', height: '100%', background: '#fff', }}>
+          <Header title='选择有效期' color='dark' />
           <WingBlank>
             <Flex className={styles.title}>有效期</Flex>
             <Flex className={styles.type}>
