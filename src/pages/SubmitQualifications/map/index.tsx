@@ -6,6 +6,7 @@ import wx from "weixin-js-sdk";
 import getWxSign from '@/services/getwxSign'
 import request from '@/services/request';
 import SelectCity from '@/components/selectCity'
+import router from 'umi/router';
 
 declare let AMap: any;
 
@@ -50,11 +51,31 @@ export default class MapPage extends Component<any> {
       }
       this.setState({ location })
       this.geocoder && this.geocoder.getAddress([location.longitude, location.latitude], (status: string, result: any) => {
-        // console.log(status, result)
-        if (status === 'complete' && result.info === 'OK') {
-          // result为对应的地理位置详细信息
-          let address = result.regeocode.formattedAddress
-          console.log(address)
+        const {city_list: list} = this.state
+        if (status === 'complete') {
+          if (result.regeocode) {
+            let { value } = this.state
+            const { addressComponent, formattedAddress } = result.regeocode
+            value.county.id = addressComponent.adcode;
+            value.county.name = addressComponent.district;
+            let { province, city } = addressComponent
+            for (let i in list) {
+              if (list[i].name == province) {
+                value.province.id = list[i].id
+                value.province.name = list[i].name
+                let city_list = list[i].city
+                for (let a in city_list) {
+                  if (city_list[a].name == city) {
+                    value.city.id = city_list[a].id
+                    value.city.name = city_list[a].name
+                  }
+                }
+              }
+            }
+
+            this.setState({ location, value, store_address: formattedAddress, city_list: list, address_name: result.regeocode.pois[0].name })
+
+          }
         }
       })
     }
@@ -145,6 +166,7 @@ export default class MapPage extends Component<any> {
             this.setState({ location })
             const lnglat = [location.longitude, location.latitude]
             this.geocoder && this.geocoder.getAddress(lnglat, (status: string, result: any) => {
+              console.log(result,'rr')
               if (status === 'complete') {
                 if (result.regeocode) {
                   let { value } = this.state
@@ -166,7 +188,7 @@ export default class MapPage extends Component<any> {
                     }
                   }
 
-                  this.setState({ location, value, store_address: formattedAddress, city_list: list })
+                  this.setState({ location, value, store_address: formattedAddress, city_list: list, address_name: result.regeocode.pois[0].name})
 
                 }
               }
@@ -215,9 +237,9 @@ export default class MapPage extends Component<any> {
 
   }
 
-  setProvinceCity = (type: string, list: any, province: string | number, city: string | number, country: string | number) =>{
-    let value = {province: {name: '', id: 0}, city: {name: '', id: 0}, country:  {name: '', id: 0} }
-    if(type === 'id'){
+  setProvinceCity = (type: string, list: any, province: string | number, city: string | number, county?: string | number) => {
+    let value = { province: { name: '', id: 0 }, city: { name: '', id: 0 }, county: { name: '', id: 0 } }
+    if (type === 'name') {
       for (let i in list) {
         if (list[i].name == province) {
           value.province.id = list[i].id
@@ -227,14 +249,46 @@ export default class MapPage extends Component<any> {
             if (city_list[a].name == city) {
               value.city.id = city_list[a].id
               value.city.name = city_list[a].name
+              if (county) {
+                let county_list = city_list[a].district
+                for (let b in county_list) {
+                  if (county_list[b].name == county) {
+                    value.county.name = county_list[b].name
+                    value.county.id = county_list[b].id
+                  }
+                }
+              }
 
             }
           }
         }
       }
-    }else if(type === 'name'){
+    } else if (type === 'id') {
+      for (let i in list) {
+        if (list[i].id == province) {
+          value.province.id = list[i].id
+          value.province.name = list[i].name
+          let city_list = list[i].city
+          for (let a in city_list) {
+            if (city_list[a].id == city) {
+              value.city.id = city_list[a].id
+              value.city.name = city_list[a].name
+              if (county) {
+                let county_list = city_list[a].district
+                for (let b in county_list) {
+                  if (county_list[b].id == county) {
+                    value.county.name = county_list[b].name
+                    value.county.id = county_list[b].id
+                  }
+                }
+              }
 
+            }
+          }
+        }
+      }
     }
+    return value
   }
 
 
@@ -242,21 +296,50 @@ export default class MapPage extends Component<any> {
     console.log(type, city)
     let { value } = this.state
     if (type === 'selected') {
-      this.setState({ value: { ...value, ...city }, is_show: false }, () => {
-        console.log(this.state.value)
+      this.setState({ value: { ...value, ...city }, is_show: false }, ()=> {
+        let address = this.state.value.province.name + this.state.value.city.name + this.state.value.county.name
+        this.geocoder = new AMap.Geocoder({})
+        this.geocoder.getLocation(address, (status, result) => {
+          console.log(status,result)
+          if(status === 'complete'){
+            this.setState({
+              location: {latitude: result.geocodes[0].location.lat,  longitude: result.geocodes[0].location.lng}, store_address: address, address_name: address})
+          }
+
+        })
       })
+
     } else {
       this.setState({ is_show: false })
     }
   }
 
   chooseItem = (item: any) => {
+    let { city_list } = this.state
+    let value = this.setProvinceCity('name',city_list,item.pname,item.cityname)
+    value.county.name = item.adname
+    value.county.id = item.adcode
     console.log(item)
+    this.setState({location: {latitude: item.location.lat, longitude: item.location.lng},value, address_name: item.name,store_address: item.address, is_search: false})
+
+  }
+
+  submit = () => {
+    const {value, store_address, location} = this.state
+    let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {}
+    storage.store_address = store_address;
+    storage.province_id = value.province.id;
+    storage.city_id = value.city.id;
+    storage.county_id = value.county.id;
+    storage.lng = location.longitude;
+    storage.lat = location.latitude;
+    localStorage.setItem('SubmitQualifications', storage)
+    router.goBack()
   }
 
   render() {
 
-    const { location, value, is_show, store_address, search_list, is_search } = this.state
+    const { location, value, is_show, store_address, search_list, is_search, address_name } = this.state
     const plugins = [
       // 'Scale',
       {
@@ -283,7 +366,7 @@ export default class MapPage extends Component<any> {
                 {
                   search_list.map(item => {
                     return (
-                      <Flex className={styles.search_item} key={item.id} onClick={this.chooseItem.bind(this,item)}>
+                      <Flex className={styles.search_item} key={item.id} onClick={this.chooseItem.bind(this, item)}>
                         <img src={require('@/assets/address.png')} alt="" />
                         <Flex className={styles.address_info} direction='column' align='start'>
                           <div className={styles.address_name}>{item.name}</div>
@@ -309,13 +392,13 @@ export default class MapPage extends Component<any> {
 
           <Flex className={styles.address_box} justify='between'>
             <Flex className={styles.address} direction='column' align='start'>
-              <div className={styles.address_name}>123</div>
-              <div>das</div>
+              <div className={styles.address_name}>{address_name}</div>
+              <div>{store_address}</div>
             </Flex>
-            <Flex align='center' justify='center' className={styles.address_button}>确认</Flex>
+            <Flex align='center' justify='center' onClick={this.submit} className={styles.address_button}>确认</Flex>
           </Flex>
           {
-            is_show ? <SelectCity list={this.state.city_list} value={[value.province.name, value.city.name]} onChange={this.selectCity} /> : null
+            is_show ? <SelectCity list={this.state.city_list} value={[value.province.name, value.city.name, value.county.name]} onChange={this.selectCity} /> : null
           }
 
 

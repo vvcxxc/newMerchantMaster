@@ -29,7 +29,7 @@ export default class SubmitQualifications extends Component {
         //环境照
         files1: [],
         files2: [],
-        //门头照例子 
+        //门头照例子
         exampleImgurl: '',
         exampleImgShow: false,
         exampleFilesType: '',
@@ -143,7 +143,7 @@ export default class SubmitQualifications extends Component {
     }
     /**打开地图 */
     openMap = () => {
-        router.push('/createTheStore/map')
+        router.push('/SubmitQualifications/map')
     }
     /**获取经营品类 */
     getManageType = () => {

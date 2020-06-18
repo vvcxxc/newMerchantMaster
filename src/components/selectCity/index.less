@@ -6,7 +6,7 @@
   height: 130vw;
   background: #fff;
   border-radius: 3vw 3vw 0 0;
-  padding: 0 4vw;
+
   .picker_buttons {
     z-index: 199;
     position: absolute;
@@ -23,9 +23,10 @@
     height: 15vw;
     z-index: 99;
     position: relative;
+    padding: 0 4vw;
     &_item {
-      font-size: 4.5vw;
-      margin-right: 3vw;
+      font-size: 3.62vw;
+      margin-right: 6vw;
       position: relative;
       height: 6vw;
       &_selected {
@@ -44,11 +45,27 @@
   }
 
   .city_box {
-    font-size: 4vw;
+    font-size: 3.7vw;
     overflow: auto;
     height: 105vw;
+
+    div {
+      width: 100%;
+    }
     &_item {
-      height: 6vw;
+      height: 14.2vw;
+      width: 100%;
+      padding: 0 4vw;
+    }
+    &_item_selected {
+      height: 14.2vw;
+      width: 100%;
+      flex: 1;
+      padding: 0 4vw;
+      background:rgba(249,249,248,1);
+      img {
+        width: 4.8vw;
+      }
     }
   }
 
