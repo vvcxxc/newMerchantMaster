@@ -185,8 +185,8 @@ export default class SubmitQualifications extends Component {
             businessLicenseValidity
         } = this.state.data;
         let errMsg = false;
-        console.log(this.state.tabCurrent , current);
-        
+        console.log(this.state.tabCurrent, current);
+
         if (this.state.tabCurrent == 0 && current == 1) {
             if (!storeName) {
                 errMsg = true;
@@ -890,7 +890,7 @@ export default class SubmitQualifications extends Component {
                 Toast.hide();
                 if (res.status_code == 201 || res.status_code == 200) {
                     Toast.success('提交成功', 5, () => {
-                        router.push({ pathname: '/' })
+                        router.push('/')
                     })
                     localStorage.removeItem('SubmitQualifications');
                 } else {
