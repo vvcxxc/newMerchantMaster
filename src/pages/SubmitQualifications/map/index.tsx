@@ -97,7 +97,9 @@ export default class MapPage extends Component<any> {
   }
 
   componentDidMount() {
-    let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {}
+    console.log('1111~~~',JSON.parse(localStorage.getItem('SubmitQualifications')) );
+
+    let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {};
     if (storage.store_address) {
       let location = {
         latitude: storage.lat,
@@ -325,15 +327,16 @@ export default class MapPage extends Component<any> {
   }
 
   submit = () => {
-    const { value, store_address, location } = this.state
+    const { value, store_address, location } = this.state;
     let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {}
-    storage.store_address = store_address;
+    storage.storeAddress = store_address;
     storage.province_id = value.province.id;
     storage.city_id = value.city.id;
     storage.county_id = value.county.id;
     storage.lng = location.longitude;
     storage.lat = location.latitude;
-    localStorage.setItem('SubmitQualifications', storage)
+    localStorage.setItem('SubmitQualificationsTime', JSON.stringify(new Date().getTime()));
+    localStorage.setItem('SubmitQualifications', JSON.stringify(storage));
     router.goBack()
   }
 
