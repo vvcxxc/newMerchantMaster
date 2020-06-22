@@ -557,10 +557,14 @@ export default class SubmitQualifications extends Component {
     }
     //输入框
     handlechange = (type: any, e: any) => {
+        if (type == 'phone' && !/^[0-9]+$/.test(e.target.value) && e.target.value != '') {
+            return;
+        }
         let data = this.state.data;
         data[type] = e.target.value.trim();
         this.setStroage(data);
         this.setState({ data })
+
     }
 
     serachInfo = (type: string | number) => {
