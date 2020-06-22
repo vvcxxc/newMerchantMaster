@@ -244,7 +244,7 @@ export default class SubmitQualifications extends Component {
             Toast.hide();
             if (res.data && res.data.id) {
                 request({
-                    url: '/admin/store/examines',
+                    url: '/supplier/store/examines/' + res.data.id,
                     method: 'get'
                 }).then(res => {
                     let { data } = res;
