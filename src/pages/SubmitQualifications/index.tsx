@@ -548,7 +548,8 @@ export default class SubmitQualifications extends Component {
 
 
         let total: any = {}
-        if (this.getBytes(storeName)) {
+        // if (this.getBytes(storeName)) {
+        if (!storeName) {
             this.setState({ ToastTipsstoreName: "请输入门店名称" })
         }
         if (!storeAddress) {
