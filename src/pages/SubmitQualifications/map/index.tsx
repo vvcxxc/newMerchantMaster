@@ -3,7 +3,7 @@ import styles from './index.less'
 import { Flex, PickerView } from 'antd-mobile'
 import { Map, Marker, MouseTool } from 'react-amap';
 import wx from "weixin-js-sdk";
-import getWxSign from '@/services/getwxSign'
+import getWxSign from '@/services/getWxSign'
 import request from '@/services/request';
 import SelectCity from '@/components/selectCity'
 import router from 'umi/router';

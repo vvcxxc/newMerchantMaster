@@ -30,6 +30,10 @@ export default class CreateGift extends Component {
     this.setState({ is_show: false })
   }
 
+  inputChange = (type: string) => (value: any) => {
+    console.log(type, value)
+  }
+
   // 图片上传
   imgChange = (files: Array<object>, type: string, ) => {
     console.log(type)
@@ -46,6 +50,10 @@ export default class CreateGift extends Component {
       this.setState({ files: [] })
     }
 
+
+  }
+
+  submit = () => {
 
   }
 
@@ -92,25 +100,31 @@ export default class CreateGift extends Component {
             <Flex className={styles.info_item} justify='between' align='center'>
               <div className={styles.item_label}>卡券面额</div>
               <Flex className={styles.item_main} justify='end' align='center'>
-                <input type='number' />元
+                <input type='number' onChange={this.inputChange.bind(this, 'offset_money')} />元
               </Flex>
             </Flex>
             <Flex className={styles.info_item} justify='between' align='center'>
               <div className={styles.item_label}>使用门槛</div>
               <Flex className={styles.item_main} justify='end' align='center'>
-                <input type='number' />元
+                <input type='number' onChange={this.inputChange.bind(this, 'use_min_price')} />元
               </Flex>
             </Flex>
             <Flex className={styles.info_item} justify='between' align='center'>
               <div className={styles.item_label}>发放数量</div>
               <Flex className={styles.item_main} justify='end' align='center'>
-                <input type='number' />(份)
+                <input type='number' onChange={this.inputChange.bind(this, 'total_repertory_num')} />(份)
+              </Flex>
+            </Flex>
+            <Flex className={styles.info_item} justify='between' align='center'>
+              <div className={styles.item_label}>发放方式</div>
+              <Flex className={styles.item_main} justify='end' align='center'>
+                <input type='number' onChange={this.inputChange.bind(this, 'each_num')} />(张/份)
               </Flex>
             </Flex>
             <Flex className={styles.info_item} justify='between' align='center'>
               <div className={styles.item_label}>使用说明</div>
               <Flex className={styles.item_main} justify='end' align='center'>
-                <input style={{ textAlign: 'left' }} placeholder='请输入使用说明，限15字' />
+                <input style={{ textAlign: 'left' }} onChange={this.inputChange.bind(this, 'use_description')} placeholder='请输入使用说明，限15字' />
               </Flex>
             </Flex>
             <Flex className={styles.info_item} justify='between' align='center'>
@@ -157,10 +171,10 @@ export default class CreateGift extends Component {
 
           }
 
-          {/* 使用规则 */}
-          <div className={styles.main_info}>
-            <div className={styles.info_title}>使用规则</div>
-          </div>
+          {/* 参与规则 */}
+          {/* <div className={styles.main_info}>
+            <div className={styles.info_title}>参与规则</div>
+          </div> */}
 
         </div>
 

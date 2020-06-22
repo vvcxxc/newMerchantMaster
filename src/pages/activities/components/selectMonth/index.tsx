@@ -31,8 +31,8 @@ export default function selectMonth(props: Props) {
     <div className={styles.mark}>
       <div className={styles.picker_box}>
         <Flex className={styles.button_box} justify='between'>
-          <div onClick={confirm} style={{color: '#4781FE'}}>确认</div>
           <div onClick={()=>props.onChange()}>取消</div>
+          <div onClick={confirm} style={{color: '#4781FE'}}>确认</div>
         </Flex>
         <PickerView
           onChange={onChange}
