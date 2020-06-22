@@ -696,39 +696,39 @@ export default class SubmitQualifications extends Component {
 
 
         let errMsg = false;
-        // if (this.getBytes(storeName)) {
-        if (!storeName) {
-            errMsg = true;
-            this.setState({ ToastTipsstoreName: "请输入门店名称" })
-        }
-        if (!storeAddress) {
-            errMsg = true;
-            this.setState({ ToastTipsstoreAddress: "请输入门店地址" })
-        }
-        if (!storeHouseNumber) {
-            errMsg = true;
-            this.setState({ ToastTipsstoreHouseNumber: "请输入商家门店地址信息" })
-        }
-        if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
-            errMsg = true;
-            this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
-        }
-        if (!manage_list_value) {
-            errMsg = true;
-            this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
-        }
-        if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
-            errMsg = true;
-            this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
-        }
-        if (storePhoto.length < 1) {
-            errMsg = true;
-            this.setState({ ToastTipsstorePhoto: "请上传商家门店照片" })
-        }
-        if (environmentPhoto1.length < 1 || environmentPhoto2.length < 1) {
-            errMsg = true;
-            this.setState({ ToastTipsenvironmentPhoto: "请上传商家环境照片" })
-        }
+        // // if (this.getBytes(storeName)) {
+        // if (!storeName) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsstoreName: "请输入门店名称" })
+        // }
+        // if (!storeAddress) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsstoreAddress: "请输入门店地址" })
+        // }
+        // if (!storeHouseNumber) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsstoreHouseNumber: "请输入商家门店地址信息" })
+        // }
+        // if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
+        // }
+        // if (!manage_list_value) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
+        // }
+        // if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
+        // }
+        // if (storePhoto.length < 1) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsstorePhoto: "请上传商家门店照片" })
+        // }
+        // if (environmentPhoto1.length < 1 || environmentPhoto2.length < 1) {
+        //     errMsg = true;
+        //     this.setState({ ToastTipsenvironmentPhoto: "请上传商家环境照片" })
+        // }
 
         // 身份证照片
         if (!idCardimg1 || !idCardimg2 || !idCardimg3) {
@@ -778,37 +778,37 @@ export default class SubmitQualifications extends Component {
             }
         }
 
-        // 营业执照
-        if (!businessLicenseimg) {
-            errMsg = true;
-            this.setState({
-                ToastTipsBusinessImg: "请上传商家营业执照图片"
-            })
-        }
+        // // 营业执照
+        // if (!businessLicenseimg) {
+        //     errMsg = true;
+        //     this.setState({
+        //         ToastTipsBusinessImg: "请上传商家营业执照图片"
+        //     })
+        // }
 
-        // 营业执照注册号
-        if (!(/^[a-zA-Z0-9]{1,18}$/.test(registrationNumber))) {
-            errMsg = true;
-            this.setState({
-                ToastTipsBusinessNo: "请输入正确18位营业执照号码"
-            })
-        }
+        // // 营业执照注册号
+        // if (!(/^[a-zA-Z0-9]{1,18}$/.test(registrationNumber))) {
+        //     errMsg = true;
+        //     this.setState({
+        //         ToastTipsBusinessNo: "请输入正确18位营业执照号码"
+        //     })
+        // }
 
-        // 执照名称
-        if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(licenseName))) {
-            errMsg = true;
-            this.setState({
-                ToastTipsCornBusName: "请输入正确营业执照名称"
-            })
-        }
+        // // 执照名称
+        // if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(licenseName))) {
+        //     errMsg = true;
+        //     this.setState({
+        //         ToastTipsCornBusName: "请输入正确营业执照名称"
+        //     })
+        // }
 
-        // 执照法人
-        if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(legalPerson))) {
-            errMsg = true;
-            this.setState({
-                ToastTipsLegalName: "请输入用户法人姓名"
-            })
-        }
+        // // 执照法人
+        // if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(legalPerson))) {
+        //     errMsg = true;
+        //     this.setState({
+        //         ToastTipsLegalName: "请输入用户法人姓名"
+        //     })
+        // }
 
         // 身份证姓名对比用户法人姓名
         if (name != legalPerson) {
