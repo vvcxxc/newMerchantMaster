@@ -145,7 +145,6 @@ export default class SubmitQualifications extends Component {
     //     });
     // }
     changeTabCurrent = async (current: number) => {
-        router.replace('/SubmitQualifications?tabCurrent=' + current);
         await this.setState({
             ToastTipsstoreName: '',
             ToastTipsstoreAddress: '',
@@ -186,6 +185,8 @@ export default class SubmitQualifications extends Component {
             businessLicenseValidity
         } = this.state.data;
         let errMsg = false;
+        console.log(this.state.tabCurrent , current);
+        
         if (this.state.tabCurrent == 0 && current == 1) {
             if (!storeName) {
                 errMsg = true;
@@ -280,6 +281,7 @@ export default class SubmitQualifications extends Component {
 
         }
         if (errMsg != true) {
+            router.replace('/SubmitQualifications?tabCurrent=' + current);
             this.setState({ tabCurrent: current })
         }
     }
