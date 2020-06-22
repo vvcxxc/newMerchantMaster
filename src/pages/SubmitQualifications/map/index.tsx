@@ -51,7 +51,7 @@ export default class MapPage extends Component<any> {
       }
       this.setState({ location })
       this.geocoder && this.geocoder.getAddress([location.longitude, location.latitude], (status: string, result: any) => {
-        const {city_list: list} = this.state
+        const { city_list: list } = this.state
         if (status === 'complete') {
           if (result.regeocode) {
             let { value } = this.state
@@ -97,7 +97,9 @@ export default class MapPage extends Component<any> {
   }
 
   componentDidMount() {
-    let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {}
+    console.log('1111~~~',JSON.parse(localStorage.getItem('SubmitQualifications')) );
+
+    let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {};
     if (storage.store_address) {
       let location = {
         latitude: storage.lat,
@@ -166,7 +168,7 @@ export default class MapPage extends Component<any> {
             this.setState({ location })
             const lnglat = [location.longitude, location.latitude]
             this.geocoder && this.geocoder.getAddress(lnglat, (status: string, result: any) => {
-              console.log(result,'rr')
+              console.log(result, 'rr')
               if (status === 'complete') {
                 if (result.regeocode) {
                   let { value } = this.state
@@ -188,7 +190,7 @@ export default class MapPage extends Component<any> {
                     }
                   }
 
-                  this.setState({ location, value, store_address: formattedAddress, city_list: list, address_name: result.regeocode.pois[0].name})
+                  this.setState({ location, value, store_address: formattedAddress, city_list: list, address_name: result.regeocode.pois[0].name })
 
                 }
               }
@@ -296,14 +298,15 @@ export default class MapPage extends Component<any> {
     console.log(type, city)
     let { value } = this.state
     if (type === 'selected') {
-      this.setState({ value: { ...value, ...city }, is_show: false }, ()=> {
+      this.setState({ value: { ...value, ...city }, is_show: false }, () => {
         let address = this.state.value.province.name + this.state.value.city.name + this.state.value.county.name
         this.geocoder = new AMap.Geocoder({})
         this.geocoder.getLocation(address, (status, result) => {
-          console.log(status,result)
-          if(status === 'complete'){
+          console.log(status, result)
+          if (status === 'complete') {
             this.setState({
-              location: {latitude: result.geocodes[0].location.lat,  longitude: result.geocodes[0].location.lng}, store_address: address, address_name: address})
+              location: { latitude: result.geocodes[0].location.lat, longitude: result.geocodes[0].location.lng }, store_address: address, address_name: address
+            })
           }
 
         })
@@ -316,24 +319,25 @@ export default class MapPage extends Component<any> {
 
   chooseItem = (item: any) => {
     let { city_list } = this.state
-    let value = this.setProvinceCity('name',city_list,item.pname,item.cityname)
+    let value = this.setProvinceCity('name', city_list, item.pname, item.cityname)
     value.county.name = item.adname
     value.county.id = item.adcode
     console.log(item)
-    this.setState({location: {latitude: item.location.lat, longitude: item.location.lng},value, address_name: item.name,store_address: item.address, is_search: false})
+    this.setState({ location: { latitude: item.location.lat, longitude: item.location.lng }, value, address_name: item.name, store_address: item.address, is_search: false })
 
   }
 
   submit = () => {
-    const {value, store_address, location} = this.state
+    const { value, store_address, location } = this.state;    
     let storage = JSON.parse(localStorage.getItem('SubmitQualifications')) || {}
-    storage.store_address = store_address;
+    storage.storeAddress = store_address;
     storage.province_id = value.province.id;
     storage.city_id = value.city.id;
     storage.county_id = value.county.id;
     storage.lng = location.longitude;
     storage.lat = location.latitude;
-    localStorage.setItem('SubmitQualifications', storage)
+    localStorage.setItem('SubmitQualificationsTime', JSON.stringify(new Date().getTime()));
+    localStorage.setItem('SubmitQualifications', JSON.stringify(storage));
     router.goBack()
   }
 

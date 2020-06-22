@@ -36,7 +36,6 @@ export default class SubmitQualifications extends Component {
         exampleImgUrlType: '',
         actionSheetShow: false,
         data: {
-            store_address: '',
             province_id: 0,
             city_id: 0,
             county_id: 0,
@@ -139,6 +138,7 @@ export default class SubmitQualifications extends Component {
     //     });
     // }
     changeTabCurrent = (current: number) => {
+        router.replace('/SubmitQualifications?tabCurrent=' + current)
         this.setState({ tabCurrent: current })
     }
     /**打开地图 */
@@ -249,7 +249,6 @@ export default class SubmitQualifications extends Component {
                 }).then(res => {
                     let { data } = res;
                     let temp = {
-                        store_address: '',
                         province_id: 0,
                         city_id: 0,
                         county_id: 0,
@@ -369,7 +368,6 @@ export default class SubmitQualifications extends Component {
         if (localStorage.getItem('SubmitQualificationsTime') && (new Date().getTime() - JSON.parse(localStorage.getItem('SubmitQualificationsTime')) < 86400000)) {
             let stroage: any = JSON.parse(localStorage.getItem('SubmitQualifications'));
             let tempData = {
-                store_address: '',
                 province_id: 0,
                 city_id: 0,
                 county_id: 0,
@@ -515,7 +513,6 @@ export default class SubmitQualifications extends Component {
             ToastTipsBusinessDate: "",
         })
         const {
-            store_address,
             province_id,
             city_id,
             county_id,
@@ -678,6 +675,7 @@ export default class SubmitQualifications extends Component {
                 })
             }
         }
+        Toast.loading('');
         //请求
         request({
             url: '/supplier/store/examines',
@@ -685,8 +683,8 @@ export default class SubmitQualifications extends Component {
             data: {
                 environmental_photo: [environmentPhoto1, environmentPhoto2],
                 store_name: storeName,
-                store_address,
-                store_address_info: storeAddress,
+                store_address: storeAddress,
+                store_address_info: storeHouseNumber,
                 province_id,
                 city_id,
                 county_id,
@@ -700,21 +698,29 @@ export default class SubmitQualifications extends Component {
                 license_name: licenseName,
                 legal_person_name: legalPerson,
                 is_license_long_time: businessLicenseValidity == '长期' ? 1 : 0,
-                license_valid_until: businessLicenseValidity,
+                license_valid_until: businessLicenseValidity != '长期' ? businessLicenseValidity : undefined,
                 identity_card_positive_image: idCardimg1,
                 identity_card_opposite_image: idCardimg2,
                 identity_card_handheld_image: idCardimg3,
                 identity_name: name,
                 identity_card: idCardNum,
                 is_identity_card_long_time: idCardValidity == '长期' ? 1 : 0,
-                identity_card_valid_until: idCardValidity,
+                identity_card_valid_until: idCardValidity != '长期' ? idCardValidity : undefined,
                 email: storesMails,
             }
-        }).then(res => { })
-
-
-        localStorage.removeItem('SubmitQualifications');
-
+        }).then(res => {
+            Toast.hide();
+            if (res.status_code == 201 || res.status_code == 200) {
+                Toast.success('提交成功', 5)
+                setTimeout(() => { router.push({ pathname: '/' }) }, 3000)
+                localStorage.removeItem('SubmitQualifications');
+            } else {
+                Toast.success(res.message, 5)
+            }
+        }).catch(err => {
+            Toast.hide();
+            Toast.fail(err.message, 5)
+        })
     }
 
     render() {
@@ -763,11 +769,14 @@ export default class SubmitQualifications extends Component {
                                 <div className={styles.selectTitle}>门店地址</div>
                                 {
                                     this.state.data.storeAddress ?
-                                        <div className={styles.unSelectBox} >{this.state.data.storeAddress}</div>
+                                        <input onClick={this.openMap} className={styles.unSelectBox} value={this.state.data.storeAddress} disabled />
                                         :
                                         <div className={styles.selectBox} >请选择地址</div>
                                 }
-                                <img className={styles.selectIcon} src="http://oss.tdianyi.com/front/eMbkt8GMNGYCpfFNe8Bycmb5QDRMTXkP.png" />
+                                {
+                                    !this.state.data.storeAddress ? <img className={styles.selectIcon} src="http://oss.tdianyi.com/front/eMbkt8GMNGYCpfFNe8Bycmb5QDRMTXkP.png" />
+                                        : null
+                                }
                             </div>
                             {
                                 ToastTipsstoreAddress ?
@@ -775,7 +784,7 @@ export default class SubmitQualifications extends Component {
                             }
                             <div className={styles.inputItem}>
                                 <div className={styles.inputTitle}>详细地址</div>
-                                <input className={styles.inputBox} placeholder="请输入详细地址" onChange={this.handlechange.bind(this, 'storeHouseNumber')} value={this.state.data.storeHouseNumber} />
+                                <input className={styles.inputBox} placeholder="道路、门牌号、楼栋号、单元室等" onChange={this.handlechange.bind(this, 'storeHouseNumber')} value={this.state.data.storeHouseNumber} />
                             </div>
                             {
                                 ToastTipsstoreHouseNumber ?
