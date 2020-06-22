@@ -18,3 +18,13 @@ export const getAuditRecord = (id:number) =>
     method: 'GET',
     url: '/supplier/store/examines/process/' + id
   })
+
+/**
+ *  添加礼品
+ */
+export const addGift = (data: object) =>
+  request({
+    method: 'POST',
+    url: '/supplier/gift',
+    data
+  })

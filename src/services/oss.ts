@@ -30,15 +30,15 @@ function b64toBlob(b64Data: any, contentType = '', sliceSize = 512) {
 }
 
 /**随机数 */
-function randomString(len: any) {
-  len = len || 32;
+function randomString() {
+  // len = len || 32;
   const chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
   const maxPos = chars.length;
   let pwd = '';
-  for (let i = 0; i < len; i++) {
+  for (let i = 0; i < 16; i++) {
     pwd += chars.charAt(Math.floor(Math.random() * maxPos));
   }
-  return pwd;
+  return pwd+new Date().getTime();
 }
 
 function oss(options: Options, files: any): Promise<any> {
@@ -85,7 +85,7 @@ function oss(options: Options, files: any): Promise<any> {
       formData.append('policy', oss_data.policy);
       formData.append('signature', oss_data.signature);
       formData.append('success_action_status', '200');
-      formData.append('key', oss_data.key + randomString(32) + '.png');
+      formData.append('key', oss_data.key + randomString() + '.png');
       formData.append('file', blob);
       options.headers = { ...options.headers, 'Content-Type': 'multipart/form-data' };
       options.url = host;
