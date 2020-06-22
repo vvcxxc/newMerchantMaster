@@ -9,14 +9,31 @@ import {getAuditId, getAuditRecord} from '@/services/api'
 export default class Index extends Component {
   state = {
     is_record: true, // 是否有审核记录
+    type: {
+      store_type: 1, // 1-未填写，2-待审，3-通过，4-拒绝
+      business_type: 1, // 1-未填写，2-待审，3-通过，4-拒绝
+      identity_type: 1, // 1-未填写，2-待审，3-通过，4-拒绝
+      examine_type: 1, // 1-未填写，2-待审，3-通过，4-拒绝
+    },
+
   }
 
   componentDidMount (){
     getAuditId().then(res => {
       if(res.data.status){
         getAuditRecord(res.data.id).then(res => {
-          console.log(res,333)
-          this.setState({is_record: true})
+          if(res.data){
+            let type = {
+              store_type: res.data.store_type,
+              business_type: res.data.business_type,
+              identity_type: res.data.identity_type,
+              examine_type: res.data.examine_type
+            }
+            this.setState({is_record: true, type})
+          }else {
+            this.setState({is_record: false})
+          }
+
         })
       }else {
         this.setState({is_record: false})
@@ -31,7 +48,7 @@ export default class Index extends Component {
 
 
   render() {
-    const { is_record } = this.state
+    const { is_record, type } = this.state
     return (
       <div className={styles.page}>
         <div className={styles.bj}></div>
@@ -55,7 +72,7 @@ export default class Index extends Component {
             </Flex>
           </Flex>
 
-          <AuditResult is_record={is_record} />
+          <AuditResult is_record={is_record} types={type} />
 
 
           <div className={styles.content_box}>

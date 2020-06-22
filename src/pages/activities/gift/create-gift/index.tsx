@@ -30,6 +30,10 @@ export default class CreateGift extends Component {
     this.setState({ is_show: false })
   }
 
+  inputChange = (type: string) => (value: any) => {
+    console.log(type, value)
+  }
+
   // 图片上传
   imgChange = (files: Array<object>, type: string, ) => {
     console.log(type)
@@ -157,10 +161,10 @@ export default class CreateGift extends Component {
 
           }
 
-          {/* 使用规则 */}
-          <div className={styles.main_info}>
-            <div className={styles.info_title}>使用规则</div>
-          </div>
+          {/* 参与规则 */}
+          {/* <div className={styles.main_info}>
+            <div className={styles.info_title}>参与规则</div>
+          </div> */}
 
         </div>
 
