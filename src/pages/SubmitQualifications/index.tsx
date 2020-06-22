@@ -568,7 +568,7 @@ export default class SubmitQualifications extends Component {
             this.setState({ ToastTipsstoreName: "请输入门店名称" })
         }
         if (!storeAddress) {
-            this.setState({ ToastTipsstoreAddress: "请输入门店名称" })
+            this.setState({ ToastTipsstoreAddress: "请输入门店地址" })
         }
         if (!storeHouseNumber) {
             this.setState({ ToastTipsstoreHouseNumber: "请输入商家门店地址信息" })
