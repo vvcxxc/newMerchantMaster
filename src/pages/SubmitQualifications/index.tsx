@@ -144,9 +144,144 @@ export default class SubmitQualifications extends Component {
     //         })
     //     });
     // }
-    changeTabCurrent = (current: number) => {
-        router.replace('/SubmitQualifications?tabCurrent=' + current)
-        this.setState({ tabCurrent: current })
+    changeTabCurrent = async (current: number) => {
+        router.replace('/SubmitQualifications?tabCurrent=' + current);
+        await this.setState({
+            ToastTipsstoreName: '',
+            ToastTipsstoreAddress: '',
+            ToastTipsstoreHouseNumber: '',
+            ToastTipsphone: '',
+            ToastTipsmanage_type: '',
+            ToastTipsstoresMails: '',
+            ToastTipsstorePhoto: '',
+            ToastTipsenvironmentPhoto: '',
+
+            ToastTipsLegalIDImg: "",
+            ToastTipsContactName: "",
+            ToastTipsLegalIdNo: "",
+            ToastTipsIDDate: "",
+
+            ToastTipsBusinessImg: "",
+            ToastTipsBusinessNo: "",
+            ToastTipsCornBusName: "",
+            ToastTipsLegalName: "",
+            ToastTipsBusinessDate: "",
+        })
+        const {
+            //门店
+            storeName,
+            storeAddress,
+            storeHouseNumber,
+            phone,
+            manage_list_value,
+            storesMails,
+            storePhoto,
+            environmentPhoto1,
+            environmentPhoto2,
+            //营业执照信息
+            businessLicenseimg,
+            registrationNumber,
+            licenseName,
+            legalPerson,
+            businessLicenseValidity
+        } = this.state.data;
+        let errMsg = false;
+        if (this.state.tabCurrent == 0 && current == 1) {
+            if (!storeName) {
+                errMsg = true;
+                this.setState({ ToastTipsstoreName: "请输入门店名称" })
+            }
+            if (!storeAddress) {
+                errMsg = true;
+                this.setState({ ToastTipsstoreAddress: "请输入门店地址" })
+            }
+            if (!storeHouseNumber) {
+                errMsg = true;
+                this.setState({ ToastTipsstoreHouseNumber: "请输入商家门店地址信息" })
+            }
+            if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
+                errMsg = true;
+                this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
+            }
+            if (!manage_list_value) {
+                errMsg = true;
+                this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
+            }
+            if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+                errMsg = true;
+                this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
+            }
+            if (storePhoto.length < 1) {
+                errMsg = true;
+                this.setState({ ToastTipsstorePhoto: "请上传商家门店照片" })
+            }
+            if (environmentPhoto1.length < 1 || environmentPhoto2.length < 1) {
+                errMsg = true;
+                this.setState({ ToastTipsenvironmentPhoto: "请上传商家环境照片" })
+            }
+        } else if (this.state.tabCurrent == 1 && current == 2) {
+            // 营业执照
+            if (!businessLicenseimg) {
+                errMsg = true;
+                this.setState({
+                    ToastTipsBusinessImg: "请上传商家营业执照图片"
+                })
+            }
+
+            // 营业执照注册号
+            if (!(/^[a-zA-Z0-9]{1,18}$/.test(registrationNumber))) {
+                errMsg = true;
+                this.setState({
+                    ToastTipsBusinessNo: "请输入正确18位营业执照号码"
+                })
+            }
+
+            // 执照名称
+            if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(licenseName))) {
+                errMsg = true;
+                this.setState({
+                    ToastTipsCornBusName: "请输入正确营业执照名称"
+                })
+            }
+
+            // 执照法人
+            if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(legalPerson))) {
+                errMsg = true;
+                this.setState({
+                    ToastTipsLegalName: "请输入用户法人姓名"
+                })
+            }
+            // 营业执照有效期
+            const businessNowTimeStamp = Date.now();
+            const businessNow = new Date(businessNowTimeStamp);
+            const businessNowTime = moment(businessNow).unix();
+            const businessDateTime = moment(businessLicenseValidity).unix();
+
+            const businessNowYear = moment(businessNow).year();
+            const businessNowMonth = moment(businessNow).month() + 1;
+            const businessNowDay = moment(businessNow).date();
+            const businessDateYear = moment(businessLicenseValidity).year();
+            const businessDateMonth = moment(businessLicenseValidity).month() + 1;
+            const businessDateDay = moment(businessLicenseValidity).date();
+            if (!businessLicenseValidity) {
+                errMsg = true;
+                this.setState({
+                    ToastTipsBusinessDate: "请输入正确有效期"
+                })
+            } else if (businessDateTime < businessNowTime) {
+                if (businessNowYear == businessDateYear && businessNowMonth == businessDateMonth && businessNowDay == businessDateDay) {
+                } else {
+                    errMsg = true;
+                    this.setState({
+                        ToastTipsBusinessDate: "请输入正确有效期"
+                    })
+                }
+            }
+
+        }
+        if (errMsg != true) {
+            this.setState({ tabCurrent: current })
+        }
     }
     /**打开地图 */
     openMap = () => {
@@ -559,50 +694,59 @@ export default class SubmitQualifications extends Component {
             businessLicenseValidity
         } = this.state.data;
 
-        console.log(businessLicenseValidity, idCardValidity)
 
-
-        let total: any = {}
+        let errMsg = false;
         // if (this.getBytes(storeName)) {
         if (!storeName) {
+            errMsg = true;
             this.setState({ ToastTipsstoreName: "请输入门店名称" })
         }
         if (!storeAddress) {
+            errMsg = true;
             this.setState({ ToastTipsstoreAddress: "请输入门店地址" })
         }
         if (!storeHouseNumber) {
+            errMsg = true;
             this.setState({ ToastTipsstoreHouseNumber: "请输入商家门店地址信息" })
         }
         if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
+            errMsg = true;
             this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
         }
         if (!manage_list_value) {
+            errMsg = true;
             this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
         }
         if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+            errMsg = true;
             this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
         }
         if (storePhoto.length < 1) {
+            errMsg = true;
             this.setState({ ToastTipsstorePhoto: "请上传商家门店照片" })
         }
         if (environmentPhoto1.length < 1 || environmentPhoto2.length < 1) {
+            errMsg = true;
             this.setState({ ToastTipsenvironmentPhoto: "请上传商家环境照片" })
         }
 
         // 身份证照片
         if (!idCardimg1 || !idCardimg2 || !idCardimg3) {
+            errMsg = true;
             this.setState({
                 ToastTipsLegalIDImg: "请上传身份证正反面图片"
             })
         }
         // 身份证姓名
         if (!(/^[\u4E00-\u9FA5]{1,}$/.test(name))) {
+            errMsg = true;
             this.setState({
                 ToastTipsContactName: "请输入用户身份证姓名"
             })
         }
         // 身份证号
         if (!(/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/).test(idCardNum)) {
+            errMsg = true;
             this.setState({
                 ToastTipsLegalIdNo: "请输入正确身份证号码"
             })
@@ -620,12 +764,14 @@ export default class SubmitQualifications extends Component {
         const dateMonth = moment(idCardValidity).month() + 1;
         const dateDay = moment(idCardValidity).date();
         if (!idCardValidity) {
+            errMsg = true;
             this.setState({
                 ToastTipsIDDate: "请输入正确有效期"
             })
         } else if (dateTime < nowTime) {
             if (nowYear == dateYear && nowMonth == dateMonth && nowDay == dateDay) {
             } else {
+                errMsg = true;
                 this.setState({
                     ToastTipsIDDate: "请输入正确有效期"
                 })
@@ -634,6 +780,7 @@ export default class SubmitQualifications extends Component {
 
         // 营业执照
         if (!businessLicenseimg) {
+            errMsg = true;
             this.setState({
                 ToastTipsBusinessImg: "请上传商家营业执照图片"
             })
@@ -641,6 +788,7 @@ export default class SubmitQualifications extends Component {
 
         // 营业执照注册号
         if (!(/^[a-zA-Z0-9]{1,18}$/.test(registrationNumber))) {
+            errMsg = true;
             this.setState({
                 ToastTipsBusinessNo: "请输入正确18位营业执照号码"
             })
@@ -648,6 +796,7 @@ export default class SubmitQualifications extends Component {
 
         // 执照名称
         if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(licenseName))) {
+            errMsg = true;
             this.setState({
                 ToastTipsCornBusName: "请输入正确营业执照名称"
             })
@@ -655,6 +804,7 @@ export default class SubmitQualifications extends Component {
 
         // 执照法人
         if (!(/^[\u4e00-\u9fa5a-zA-Z0-9]{1,}$/.test(legalPerson))) {
+            errMsg = true;
             this.setState({
                 ToastTipsLegalName: "请输入用户法人姓名"
             })
@@ -662,6 +812,7 @@ export default class SubmitQualifications extends Component {
 
         // 身份证姓名对比用户法人姓名
         if (name != legalPerson) {
+            errMsg = true;
             this.setState({
                 ToastTipsContactName: "用户身份证姓名和用户法人姓名不一致"
             })
@@ -680,64 +831,70 @@ export default class SubmitQualifications extends Component {
         const businessDateMonth = moment(businessLicenseValidity).month() + 1;
         const businessDateDay = moment(businessLicenseValidity).date();
         if (!businessLicenseValidity) {
+            errMsg = true;
             this.setState({
                 ToastTipsBusinessDate: "请输入正确有效期"
             })
         } else if (businessDateTime < businessNowTime) {
             if (businessNowYear == businessDateYear && businessNowMonth == businessDateMonth && businessNowDay == businessDateDay) {
             } else {
+                errMsg = true;
                 this.setState({
                     ToastTipsBusinessDate: "请输入正确有效期"
                 })
             }
         }
-        Toast.loading('');
-        //请求
-        request({
-            url: '/supplier/store/examines',
-            method: 'POST',
-            data: {
-                environmental_photo: [environmentPhoto1, environmentPhoto2],
-                store_name: storeName,
-                store_address: storeAddress,
-                store_address_info: storeHouseNumber,
-                province_id,
-                city_id,
-                county_id,
-                store_telephone: phone,
-                category_id: manage_list_value,
-                door_photo: storePhoto,
-                lng,
-                lat,
-                business_license_photo: businessLicenseimg,
-                registration_number: registrationNumber,
-                license_name: licenseName,
-                legal_person_name: legalPerson,
-                is_license_long_time: businessLicenseValidity == '长期' ? 1 : 0,
-                license_valid_until: businessLicenseValidity != '长期' ? businessLicenseValidity : undefined,
-                identity_card_positive_image: idCardimg1,
-                identity_card_opposite_image: idCardimg2,
-                identity_card_handheld_image: idCardimg3,
-                identity_name: name,
-                identity_card: idCardNum,
-                is_identity_card_long_time: idCardValidity == '长期' ? 1 : 0,
-                identity_card_valid_until: idCardValidity != '长期' ? idCardValidity : undefined,
-                email: storesMails,
-            }
-        }).then(res => {
-            Toast.hide();
-            if (res.status_code == 201 || res.status_code == 200) {
-                Toast.success('提交成功', 5, () => {
-                    router.push({ pathname: '/' })
-                })
-                localStorage.removeItem('SubmitQualifications');
-            } else {
-                Toast.success(res.message, 5)
-            }
-        }).catch(err => {
-            Toast.hide();
-            Toast.fail(err.message, 5)
-        })
+
+        if (errMsg == true) { return }
+        else {
+            Toast.loading('');
+            //请求
+            request({
+                url: '/supplier/store/examines',
+                method: 'POST',
+                data: {
+                    environmental_photo: [environmentPhoto1, environmentPhoto2],
+                    store_name: storeName,
+                    store_address: storeAddress,
+                    store_address_info: storeHouseNumber,
+                    province_id,
+                    city_id,
+                    county_id,
+                    store_telephone: phone,
+                    category_id: manage_list_value,
+                    door_photo: storePhoto,
+                    lng,
+                    lat,
+                    business_license_photo: businessLicenseimg,
+                    registration_number: registrationNumber,
+                    license_name: licenseName,
+                    legal_person_name: legalPerson,
+                    is_license_long_time: businessLicenseValidity == '长期' ? 1 : 0,
+                    license_valid_until: businessLicenseValidity != '长期' ? businessLicenseValidity : undefined,
+                    identity_card_positive_image: idCardimg1,
+                    identity_card_opposite_image: idCardimg2,
+                    identity_card_handheld_image: idCardimg3,
+                    identity_name: name,
+                    identity_card: idCardNum,
+                    is_identity_card_long_time: idCardValidity == '长期' ? 1 : 0,
+                    identity_card_valid_until: idCardValidity != '长期' ? idCardValidity : undefined,
+                    email: storesMails,
+                }
+            }).then(res => {
+                Toast.hide();
+                if (res.status_code == 201 || res.status_code == 200) {
+                    Toast.success('提交成功', 5, () => {
+                        router.push({ pathname: '/' })
+                    })
+                    localStorage.removeItem('SubmitQualifications');
+                } else {
+                    Toast.success(res.message, 5)
+                }
+            }).catch(err => {
+                Toast.hide();
+                Toast.fail(err.message, 5)
+            })
+        }
     }
 
     render() {
@@ -802,7 +959,7 @@ export default class SubmitQualifications extends Component {
                                 <div className={styles.selectTitle}>门店地址</div>
                                 {
                                     this.state.data.storeAddress ?
-                                        <input onClick={this.openMap} className={styles.unSelectBox} value={this.state.data.storeAddress} disabled />
+                                        <div onClick={this.openMap} className={styles.unSelectBoxDiv} >{this.state.data.storeAddress} </div>
                                         :
                                         <div className={styles.selectBox} >请选择地址</div>
                                 }
