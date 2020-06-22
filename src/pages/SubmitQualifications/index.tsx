@@ -85,6 +85,13 @@ export default class SubmitQualifications extends Component {
         ToastTipsCornBusName: "",
         ToastTipsLegalName: "",
         ToastTipsBusinessDate: "",
+
+        store_type: 1,//1-未填写，2-待审，3-通过，4-拒绝	
+        store_remarks: '',
+        business_type: 1,
+        business_remarks: '',
+        identity_type: 1,
+        identity_remarks: ''
     }
     componentDidMount() {
         this.setState({ tabCurrent: this.props.location.query.tabCurrent || 0 })
@@ -249,37 +256,45 @@ export default class SubmitQualifications extends Component {
                 }).then(res => {
                     let { data } = res;
                     let temp = {
-                        province_id: 0,
-                        city_id: 0,
-                        county_id: 0,
-                        lng: 0,
-                        lat: 0,
+                        province_id: data.province_id,
+                        city_id: data.city_id,
+                        county_id: data.county_id,
+                        lng: data.lng,
+                        lat: data.lat,
 
-                        storeName: '?',
-                        storeAddress: '?',
-                        storeHouseNumber: '?',
-                        phone: '?',
-                        manage_type: '?',
+                        storeName: data.store_name,
+                        storeAddress: data.store_address,
+                        storeHouseNumber: data.store_address_info,
+                        phone: data.store_telephone,
+                        manage_type: data.store_type,
                         selector: '?',
-                        storesMails: '?',
-                        storePhoto: '?',
-                        environmentPhoto1: '?',
-                        environmentPhoto2: '?',
+                        storesMails: data.email,
+                        storePhoto: data.door_photo,
+                        environmentPhoto1: data.environmental_photo[0],
+                        environmentPhoto2: data.environmental_photo[1],
 
-                        idCardimg1: data.legal_id_front_img.split('http://oss.tdianyi.com/')[1],
-                        idCardimg2: data.legal_id_back_img.split('http://oss.tdianyi.com/')[1],
-                        idCardimg3: data.hand_hold_id_img.split('http://oss.tdianyi.com/')[1],
-                        name: data.contact_name,
-                        idCardNum: data.legal_id_no,
-                        idCardValidity: data.legal_id_valid_date,
+                        idCardimg1: data.identity_card_positive_image,
+                        idCardimg2: data.identity_card_opposite_image,
+                        idCardimg3: data.identity_card_handheld_image,
+                        name: data.identity_name,
+                        idCardNum: data.identity_card,
+                        idCardValidity: data.identity_card_valid_until,
 
-                        businessLicenseimg: data.three_certs_in_one_img.split('http://oss.tdianyi.com/')[1],
-                        registrationNumber: data.three_certs_in_one_no,
-                        licenseName: data.corn_bus_name,
-                        legalPerson: data.legal_name,
-                        businessLicenseValidity: data.three_certs_in_one_valid_date,
+                        businessLicenseimg: data.business_license_photo,
+                        registrationNumber: data.registration_number,
+                        licenseName: data.license_name,
+                        legalPerson: data.legal_person_name,
+                        businessLicenseValidity: data.license_valid_until,
                     };
-                    that.setState({ data: temp }, () => {
+                    that.setState({
+                        data: temp,
+                        store_type: data.store_type,
+                        store_remarks: data.store_remarks,
+                        business_type: data.business_type,
+                        business_remarks: data.business_remarks,
+                        identity_type: data.identity_type,
+                        identity_remarks: data.identity_remarks
+                    }, () => {
                         that.getStroage();
                     })
                 }).catch((err) => {
@@ -712,8 +727,8 @@ export default class SubmitQualifications extends Component {
         }).then(res => {
             Toast.hide();
             if (res.status_code == 201 || res.status_code == 200) {
-                Toast.success('提交成功', 5, ()=> {
-                  router.push({ pathname: '/' })
+                Toast.success('提交成功', 5, () => {
+                    router.push({ pathname: '/' })
                 })
                 localStorage.removeItem('SubmitQualifications');
             } else {
@@ -749,12 +764,28 @@ export default class SubmitQualifications extends Component {
             ToastTipsLegalName,
             ToastTipsBusinessDate,
 
+            store_type,
+            store_remarks,
+            business_type,
+            business_remarks,
+            identity_type,
+            identity_remarks,
+
         } = this.state;
 
         return (
             <div className={styles.creatStorePage} >
                 <Header title='创建门店' color='dark' />
                 <div className={tabCurrent == 1 ? styles.tabContent2 : tabCurrent == 2 ? styles.tabContent3 : styles.tabContent1}> </div>
+                {
+                    tabCurrent == 1 && store_type == 4 ? <div className={styles.errToastBox}><div className={styles.errToast}>{store_remarks}</div>  </div> : null
+                }
+                {
+                    tabCurrent == 2 && business_type == 4 ? <div className={styles.errToastBox}> <div className={styles.errToast}>{business_remarks} </div> </div> : null
+                }
+                {
+                    tabCurrent == 3 && identity_type == 4 ? <div className={styles.errToastBox}> <div className={styles.errToast}>{identity_remarks} </div> </div> : null
+                }
                 {
                     tabCurrent == 0 ?
                         <div className={styles.backgroundContent}>
