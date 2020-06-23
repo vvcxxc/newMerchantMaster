@@ -963,7 +963,7 @@ export default class SubmitQualifications extends Component {
 
                             <div className={styles.inputItem}>
                                 <div className={styles.inputTitle}>门店名称</div>
-                                <input className={styles.inputBox} placeholder="请输入门店名称" onChange={this.handlechange.bind(this, 'storeName')} value={this.state.data.storeName} />
+                                <input className={styles.inputBox} placeholder="请输入门店名称" maxLength={30} onChange={this.handlechange.bind(this, 'storeName')} value={this.state.data.storeName} />
                             </div>
                             {
                                 ToastTipsstoreName ?
