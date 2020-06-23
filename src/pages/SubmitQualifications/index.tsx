@@ -893,7 +893,7 @@ export default class SubmitQualifications extends Component {
                     identity_card: idCardNum,
                     is_identity_card_long_time: idCardValidity == '长期' ? 1 : 0,
                     identity_card_valid_until: idCardValidity != '长期' ? idCardValidity : undefined,
-                    email: storesMails,
+                    email: storesMails != "" ? storesMails : undefined,
                 }
             }).then(res => {
                 Toast.hide();
