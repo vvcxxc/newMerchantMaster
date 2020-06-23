@@ -202,13 +202,13 @@ export default class SubmitQualifications extends Component {
             }
             if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
                 errMsg = true;
-                this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
+                this.setState({ ToastTipsphone: "请输入正确11位手机号码" })
             }
             if (!manage_list_value) {
                 errMsg = true;
                 this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
             }
-            if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+            if (storesMails != "" && !(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
                 errMsg = true;
                 this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
             }
@@ -718,13 +718,13 @@ export default class SubmitQualifications extends Component {
         // }
         // if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
         //     errMsg = true;
-        //     this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
+        //     this.setState({ ToastTipsphone: "请输入正确11位手机号码" })
         // }
         // if (!manage_list_value) {
         //     errMsg = true;
         //     this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
         // }
-        // if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+        // if (storesMails!=''&&!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
         //     errMsg = true;
         //     this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
         // }
@@ -898,9 +898,8 @@ export default class SubmitQualifications extends Component {
             }).then(res => {
                 Toast.hide();
                 if (res.status_code == 201 || res.status_code == 200) {
-                    Toast.success('提交成功', 5, () => {
-                        router.push('/')
-                    })
+                    Toast.success('提交成功', 5)
+                    setTimeout(() => { router.push('/') }, 3000)
                     localStorage.removeItem('SubmitQualifications');
                 } else {
                     Toast.success(res.message, 5)
