@@ -1139,7 +1139,7 @@ export default class SubmitQualifications extends Component {
                             }
                             <div className={styles.inputItem}>
                                 <div className={styles.inputTitle}>注册号</div>
-                                <input className={styles.inputBox} placeholder="同统一社会信用代码" onChange={this.handlechange.bind(this, 'registrationNumber')} value={this.state.data.registrationNumber} />
+                                <input className={styles.inputBox} placeholder="同统一社会信用代码" maxLength={18} onChange={this.handlechange.bind(this, 'registrationNumber')} value={this.state.data.registrationNumber} />
                             </div>
                             {
                                 ToastTipsBusinessNo ? (
