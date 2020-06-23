@@ -1,11 +1,16 @@
 .creatStorePage {
-    height: auto;
-    min-height: 100vh;
+    height: 100vh;
     width: 100vw;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background: #fff;
     padding-bottom: 130px;
     font-size: 30px;
     line-height: 1;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
 
     .tabContent1,
     .tabContent2,
@@ -55,10 +60,11 @@
 
     .backgroundContent {
         height: auto;
+        min-height: 100vh;
         width: 100vw;
         background: #fff;
         margin-bottom: 20px;
-        padding: 0 30px;
+        padding: 0 30px 180px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -566,6 +572,16 @@
                 line-height: 1;
                 display: flex;
                 align-items: center;
+            }
+            .unSelectBoxDiv {
+                height: 30px;
+                width: calc(100% - 175px);
+                color: #000;
+                font-size: 30px;
+                line-height: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .selectBox {
