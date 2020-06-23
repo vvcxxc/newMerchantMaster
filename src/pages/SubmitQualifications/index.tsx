@@ -35,6 +35,7 @@ export default class SubmitQualifications extends Component {
         exampleFilesType: '',
         exampleImgUrlType: '',
         actionSheetShow: false,
+        record_id: 0,
         data: {
             province_id: 0,
             city_id: 0,
@@ -47,7 +48,6 @@ export default class SubmitQualifications extends Component {
             storeHouseNumber: '',
             phone: '',
             manage_list_value: 0,//经营分类id
-            manage_type: '',
             selector: '',//经营分类文字
             storesMails: '',
             storePhoto: '',
@@ -387,6 +387,7 @@ export default class SubmitQualifications extends Component {
         }).then(res => {
             Toast.hide();
             if (res.data && res.data.id) {
+                that.setState({ record_id: res.data.id })
                 request({
                     url: '/supplier/store/examines/' + res.data.id,
                     method: 'get'
@@ -403,8 +404,8 @@ export default class SubmitQualifications extends Component {
                         storeAddress: data.store_address,
                         storeHouseNumber: data.store_address_info,
                         phone: data.store_telephone,
-                        manage_type: data.store_type,
-                        selector: '?',
+                        selector: data.category_name,
+                        manage_list_value: data.category_id,
                         storesMails: data.email,
                         storePhoto: data.door_photo,
                         environmentPhoto1: data.environmental_photo[0],
@@ -438,6 +439,7 @@ export default class SubmitQualifications extends Component {
                     that.getStroage();
                 })
             } else {
+                that.setState({ record_id: 0 });
                 that.getStroage();
             }
         }).catch((err) => {
@@ -530,7 +532,6 @@ export default class SubmitQualifications extends Component {
                 storeAddress: '',
                 storeHouseNumber: '',
                 phone: '',
-                manage_type: '',
                 manage_list_value: 0,
                 selector: '',
                 storesMails: '',
@@ -855,9 +856,17 @@ export default class SubmitQualifications extends Component {
         else {
             Toast.loading('');
             //请求
+            let url, method;
+            if (this.state.record_id) {
+                url = '/supplier/store/examines/' + this.state.record_id;
+                method = 'PUT';
+            } else {
+                url = '/supplier/store/examines';
+                method = 'POST';
+            }
             request({
-                url: '/supplier/store/examines',
-                method: 'POST',
+                url,
+                method,
                 data: {
                     environmental_photo: [environmentPhoto1, environmentPhoto2],
                     store_name: storeName,
