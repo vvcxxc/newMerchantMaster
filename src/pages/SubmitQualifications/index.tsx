@@ -897,7 +897,7 @@ export default class SubmitQualifications extends Component {
                 }
             }).then(res => {
                 Toast.hide();
-                if (res.status_code == 201 || res.status_code == 200) {
+                if (res.data) {
                     Toast.success('提交成功', 5)
                     setTimeout(() => { router.push('/') }, 3000)
                     localStorage.removeItem('SubmitQualifications');
