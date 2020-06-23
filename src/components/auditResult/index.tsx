@@ -23,7 +23,7 @@ export default function AuditResult({is_record, types}: Props) {
   useEffect(()=>{
     for(let key in types){
       console.log(types[key])
-      if(types[key] === 3){
+      if(types[key] === 4){
         setShow(true)
       }
     }
