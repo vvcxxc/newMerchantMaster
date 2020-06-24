@@ -172,7 +172,7 @@ export default class Login extends Component {
                       </Flex>
                     })
                   }
-                  <input value={code} onChange={this.codeChange} ref={this.input} />
+                  <input  className={styles.code_box_input}  value={code} onChange={this.codeChange} ref={this.input} />
                 </Flex>
                 {
                   time === 0 ? <div className={styles.send_code}>重新发送</div> : <div className={styles.send_code} style={{ color: '#98A6AD' }}>{time}秒后重新发送</div>
