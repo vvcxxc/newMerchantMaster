@@ -143,7 +143,7 @@ export default class Login extends Component {
         {
           step === 1 ? (
             <div>
-              <img alt='' src='http://tmwl.oss-cn-shenzhen.aliyuncs.com/front/tZBzzmfsJtQDz4xAHYs8pX2z8AfCyWdD.png' className={styles.login_logo} />
+              <img alt='' src='http://tmwl.oss-cn-shenzhen.aliyuncs.com/front/WfrcXymYKCNMTFJMGyCCrZz3RcfWw8yt.png' className={styles.login_logo} />
               <div className={styles.login_main}>
                 <div className={styles.main_title}>欢迎来到商家登录台</div>
                 <div className={styles.input_box}>
