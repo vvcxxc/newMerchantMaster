@@ -3,7 +3,8 @@ import styles from './index.less'
 import Header from '@/components/header'
 import Item from './item'
 import { getMyGiftList } from '@/services/api'
-import { Flex } from 'antd-mobile'
+import { Flex, Icon } from 'antd-mobile'
+import router from 'umi/router'
 export default class MyGift extends Component {
   state = {
     list: [],
@@ -36,12 +37,16 @@ export default class MyGift extends Component {
     }
   }
 
+  gotoAdd = () => {
+    router.push('/activities/gift/create-gift')
+  }
+
 
   render() {
     const { list, is_more } = this.state
     return (
       <div className={styles.my_gift_page}>
-        <Header title='我的礼品' color='dark' style={{ background: '#fff' }} />
+        <Header title='我的礼品' color='dark' style={{ background: '#fff' }} rightRender={()=> <div onClick={this.gotoAdd}>添加</div>}/>
         {
           list.map((item: any) => {
             return <Item item={item} key={item.id} />
