@@ -35,6 +35,7 @@ export default class SubmitQualifications extends Component {
         exampleFilesType: '',
         exampleImgUrlType: '',
         actionSheetShow: false,
+        record_id: 0,
         data: {
             province_id: 0,
             city_id: 0,
@@ -47,7 +48,6 @@ export default class SubmitQualifications extends Component {
             storeHouseNumber: '',
             phone: '',
             manage_list_value: 0,//经营分类id
-            manage_type: '',
             selector: '',//经营分类文字
             storesMails: '',
             storePhoto: '',
@@ -202,13 +202,13 @@ export default class SubmitQualifications extends Component {
             }
             if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
                 errMsg = true;
-                this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
+                this.setState({ ToastTipsphone: "请输入正确11位手机号码" })
             }
             if (!manage_list_value) {
                 errMsg = true;
                 this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
             }
-            if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+            if (storesMails != "" && !(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
                 errMsg = true;
                 this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
             }
@@ -387,6 +387,7 @@ export default class SubmitQualifications extends Component {
         }).then(res => {
             Toast.hide();
             if (res.data && res.data.id) {
+                that.setState({ record_id: res.data.id })
                 request({
                     url: '/supplier/store/examines/' + res.data.id,
                     method: 'get'
@@ -403,8 +404,8 @@ export default class SubmitQualifications extends Component {
                         storeAddress: data.store_address,
                         storeHouseNumber: data.store_address_info,
                         phone: data.store_telephone,
-                        manage_type: data.store_type,
-                        selector: '?',
+                        selector: data.category_name,
+                        manage_list_value: data.category_id,
                         storesMails: data.email,
                         storePhoto: data.door_photo,
                         environmentPhoto1: data.environmental_photo[0],
@@ -438,6 +439,7 @@ export default class SubmitQualifications extends Component {
                     that.getStroage();
                 })
             } else {
+                that.setState({ record_id: 0 });
                 that.getStroage();
             }
         }).catch((err) => {
@@ -530,7 +532,6 @@ export default class SubmitQualifications extends Component {
                 storeAddress: '',
                 storeHouseNumber: '',
                 phone: '',
-                manage_type: '',
                 manage_list_value: 0,
                 selector: '',
                 storesMails: '',
@@ -717,13 +718,13 @@ export default class SubmitQualifications extends Component {
         // }
         // if (!/^1[3456789]\d{9}$/.test(phone) || !/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(phone)) {
         //     errMsg = true;
-        //     this.setState({ ToastTipsphone: "请输入正确11位手机号码或7-8位座机号码" })
+        //     this.setState({ ToastTipsphone: "请输入正确11位手机号码" })
         // }
         // if (!manage_list_value) {
         //     errMsg = true;
         //     this.setState({ ToastTipsmanage_type: "请选择商家品类信息" })
         // }
-        // if (!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
+        // if (storesMails!=''&&!(new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$").test(storesMails))) {
         //     errMsg = true;
         //     this.setState({ ToastTipsstoresMails: "请输入正确邮箱信息" })
         // }
@@ -855,9 +856,17 @@ export default class SubmitQualifications extends Component {
         else {
             Toast.loading('');
             //请求
+            let url, method;
+            if (this.state.record_id) {
+                url = '/supplier/store/examines/' + this.state.record_id;
+                method = 'PUT';
+            } else {
+                url = '/supplier/store/examines';
+                method = 'POST';
+            }
             request({
-                url: '/supplier/store/examines',
-                method: 'POST',
+                url,
+                method,
                 data: {
                     environmental_photo: [environmentPhoto1, environmentPhoto2],
                     store_name: storeName,
@@ -884,14 +893,13 @@ export default class SubmitQualifications extends Component {
                     identity_card: idCardNum,
                     is_identity_card_long_time: idCardValidity == '长期' ? 1 : 0,
                     identity_card_valid_until: idCardValidity != '长期' ? idCardValidity : undefined,
-                    email: storesMails,
+                    email: storesMails != "" ? storesMails : undefined,
                 }
             }).then(res => {
                 Toast.hide();
-                if (res.status_code == 201 || res.status_code == 200) {
-                    Toast.success('提交成功', 5, () => {
-                        router.push('/')
-                    })
+                if (res.data) {
+                    Toast.success('提交成功', 5)
+                    setTimeout(() => { router.push('/') }, 3000)
                     localStorage.removeItem('SubmitQualifications');
                 } else {
                     Toast.success(res.message, 5)
@@ -955,7 +963,7 @@ export default class SubmitQualifications extends Component {
 
                             <div className={styles.inputItem}>
                                 <div className={styles.inputTitle}>门店名称</div>
-                                <input className={styles.inputBox} placeholder="请输入门店名称" onChange={this.handlechange.bind(this, 'storeName')} value={this.state.data.storeName} />
+                                <input className={styles.inputBox} placeholder="请输入门店名称" maxLength={30} onChange={this.handlechange.bind(this, 'storeName')} value={this.state.data.storeName} />
                             </div>
                             {
                                 ToastTipsstoreName ?
@@ -1130,7 +1138,7 @@ export default class SubmitQualifications extends Component {
                             }
                             <div className={styles.inputItem}>
                                 <div className={styles.inputTitle}>注册号</div>
-                                <input className={styles.inputBox} placeholder="同统一社会信用代码" onChange={this.handlechange.bind(this, 'registrationNumber')} value={this.state.data.registrationNumber} />
+                                <input className={styles.inputBox} placeholder="同统一社会信用代码" maxLength={18} onChange={this.handlechange.bind(this, 'registrationNumber')} value={this.state.data.registrationNumber} />
                             </div>
                             {
                                 ToastTipsBusinessNo ? (

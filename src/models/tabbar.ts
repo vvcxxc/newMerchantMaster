@@ -7,6 +7,7 @@
  * @FilePath: \newMerchantMaster\src\models\tabbar.ts
  */
 import { Model } from 'dva';
+import Axios from 'axios'
 
 const model: Model = {
   namespace: 'tabbar',
@@ -60,6 +61,21 @@ const model: Model = {
     history({ dispatch, history }) {
       let url = location.href;
       sessionStorage.setItem('url', url)
+      if (!localStorage.getItem('oss_data')) {
+        Axios.get('http://release.api.supplier.tdianyi.com/api/v2/up').then(res => {
+          let { data } = res.data;
+          let oss_data = {
+            policy: data.policy,
+            OSSAccessKeyId: data.accessid,
+            success_action_status: 200, //让服务端返回200,不然，默认会返回204
+            signature: data.signature,
+            callback: data.callback,
+            host: data.host,
+            key: data.dir
+          };
+          window.localStorage.setItem('oss_data', JSON.stringify(oss_data));
+        })
+      }
       history.listen(() =>
         dispatch({
           type: 'setShow',
