@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styles from './index.less'
 import { Toast, Flex } from 'antd-mobile'
-import { sendVerificationCode, verifyPhoneCode, phoneLogin } from './service'
+import { sendVerificationCode, verifyPhoneCode, phoneLogin } from '@/services/api'
 import router from 'umi/router';
 
 let timer = null;
@@ -78,7 +78,6 @@ export default class Login extends Component {
       for (let i in value) {
         code_list[i] = value[i]
       }
-
       this.setState({ code: value, code_list, blink_idx: value.length, is_confirm: value.length === 6 })
     }
   }
@@ -119,6 +118,7 @@ export default class Login extends Component {
       phoneLogin(permitCode).then(res => {
         Toast.hide()
         localStorage.setItem('token', 'Bearer ' +  res.data.access_token)
+        localStorage.setItem('permitCode', permitCode)
         router.push('/')
       }).catch(err => {
         Toast.hide()

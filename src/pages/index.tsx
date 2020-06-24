@@ -42,8 +42,9 @@ export default class Index extends Component {
   }
 
   toAddGift = () => {
-    router.push('/activities/myGift/create')
+    router.push('/activities/gift/my-gift')
   }
+
 
 
 
@@ -82,7 +83,7 @@ export default class Index extends Component {
                 <img src={require('@/assets/index/rush-buy.png')} alt="" />
                 <div>抢购活动</div>
               </Flex>
-              <Flex className={styles.business_item} direction='column' align='center' justify='center'>
+              <Flex className={styles.business_item} direction='column' align='center' justify='center' onClick={this.toAddGift}>
                 <img src={require('@/assets/index/gift.png')} alt="" />
                 <div>礼品</div>
               </Flex>
