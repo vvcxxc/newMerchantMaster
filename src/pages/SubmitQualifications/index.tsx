@@ -230,7 +230,7 @@ export default class SubmitQualifications extends Component {
             }
 
             // 营业执照注册号
-            if (!(/^[a-zA-Z0-9]{1,18}$/.test(registrationNumber))) {
+            if (!(/^[a-zA-Z0-9]{1,18}$/.test(registrationNumber)) || registrationNumber.length != 18) {
                 errMsg = true;
                 this.setState({
                     ToastTipsBusinessNo: "请输入正确18位营业执照号码"
@@ -571,80 +571,80 @@ export default class SubmitQualifications extends Component {
     }
 
     serachInfo = (type: string | number) => {
-        if (type == '1' && this.state.data.idCardimg1 && this.state.data.idCardimg2) {
-            Toast.loading('识别中');
-            request({
-                url: 'v3/idcard',
-                method: 'get',
-                params: {
-                    idcard_front_img: this.state.data.idCardimg1,
-                    idcard_back_img: this.state.data.idCardimg2
-                }
-            }).then(res => {
-                Toast.hide();
-                let { data, code } = res;
-                if (code == 200) {
-                    let idCardNum = data.front.words_result['公民身份号码'].words
-                    let name = data.front.words_result['姓名'].words;
-                    let idCardValidity = data.back.words_result['失效日期'].words;
-                    if (idCardValidity != '长期') {
-                        idCardValidity = moment(idCardValidity).format("YYYY-MM-DD")
-                    }
-                    if (idCardNum && name) {
-                        let data = this.state.data;
-                        data['name'] = name;
-                        data['idCardNum'] = idCardNum;
-                        data['idCardValidity'] = idCardValidity;
-                        this.setStroage(data);
-                        this.setState({ data });
-                        Toast.success('识别成功', 2);
-                    } else {
-                        Toast.fail('识别失败，请手动填写信息', 2);
-                    }
-                } else {
-                    Toast.fail('识别失败，请手动填写信息', 2);
-                }
-            }).catch(err => {
-                Toast.hide();
-                Toast.fail('识别失败', 2)
-            })
-        } else if (type == '3' && this.state.data.businessLicenseimg) {
-            Toast.loading('识别中');
-            request({
-                url: 'v3/business_license',
-                method: 'get',
-                params: {
-                    business_license_img: this.state.data.businessLicenseimg
-                }
-            }).then(res => {
-                Toast.hide();
-                let { data, code } = res;
-                if (code == 200) {
-                    let licenseName = data['单位名称'].words;
-                    let registrationNumber = data['社会信用代码'].words;
-                    let legalPerson = data['法人'].words;
-                    let businessLicenseValidity = data['有效期'].words;
-                    Toast.hide();
-                    if (licenseName && registrationNumber && legalPerson && businessLicenseValidity) {
-                        let data = this.state.data;
-                        data['licenseName'] = licenseName;
-                        data['registrationNumber'] = registrationNumber;
-                        data['legalPerson'] = legalPerson;
-                        data['businessLicenseValidity'] = businessLicenseValidity;
-                        this.setStroage(data);
-                        this.setState({ data });
-                        Toast.success('识别成功', 2);
-                    } else {
-                        Toast.fail('识别失败，请手动填写信息', 2);
-                    }
-                } else {
-                    Toast.fail('识别失败，请手动填写信息', 2);
-                }
-            }).catch(err => {
-                Toast.hide();
-                Toast.fail('识别失败', 2)
-            })
-        }
+        // if (type == '1' && this.state.data.idCardimg1 && this.state.data.idCardimg2) {
+        //     Toast.loading('识别中');
+        //     request({
+        //         url: 'v3/idcard',
+        //         method: 'get',
+        //         params: {
+        //             idcard_front_img: this.state.data.idCardimg1,
+        //             idcard_back_img: this.state.data.idCardimg2
+        //         }
+        //     }).then(res => {
+        //         Toast.hide();
+        //         let { data, code } = res;
+        //         if (code == 200) {
+        //             let idCardNum = data.front.words_result['公民身份号码'].words
+        //             let name = data.front.words_result['姓名'].words;
+        //             let idCardValidity = data.back.words_result['失效日期'].words;
+        //             if (idCardValidity != '长期') {
+        //                 idCardValidity = moment(idCardValidity).format("YYYY-MM-DD")
+        //             }
+        //             if (idCardNum && name) {
+        //                 let data = this.state.data;
+        //                 data['name'] = name;
+        //                 data['idCardNum'] = idCardNum;
+        //                 data['idCardValidity'] = idCardValidity;
+        //                 this.setStroage(data);
+        //                 this.setState({ data });
+        //                 Toast.success('识别成功', 2);
+        //             } else {
+        //                 Toast.fail('识别失败，请手动填写信息', 2);
+        //             }
+        //         } else {
+        //             Toast.fail('识别失败，请手动填写信息', 2);
+        //         }
+        //     }).catch(err => {
+        //         Toast.hide();
+        //         Toast.fail('识别失败', 2)
+        //     })
+        // } else if (type == '3' && this.state.data.businessLicenseimg) {
+        //     Toast.loading('识别中');
+        //     request({
+        //         url: 'v3/business_license',
+        //         method: 'get',
+        //         params: {
+        //             business_license_img: this.state.data.businessLicenseimg
+        //         }
+        //     }).then(res => {
+        //         Toast.hide();
+        //         let { data, code } = res;
+        //         if (code == 200) {
+        //             let licenseName = data['单位名称'].words;
+        //             let registrationNumber = data['社会信用代码'].words;
+        //             let legalPerson = data['法人'].words;
+        //             let businessLicenseValidity = data['有效期'].words;
+        //             Toast.hide();
+        //             if (licenseName && registrationNumber && legalPerson && businessLicenseValidity) {
+        //                 let data = this.state.data;
+        //                 data['licenseName'] = licenseName;
+        //                 data['registrationNumber'] = registrationNumber;
+        //                 data['legalPerson'] = legalPerson;
+        //                 data['businessLicenseValidity'] = businessLicenseValidity;
+        //                 this.setStroage(data);
+        //                 this.setState({ data });
+        //                 Toast.success('识别成功', 2);
+        //             } else {
+        //                 Toast.fail('识别失败，请手动填写信息', 2);
+        //             }
+        //         } else {
+        //             Toast.fail('识别失败，请手动填写信息', 2);
+        //         }
+        //     }).catch(err => {
+        //         Toast.hide();
+        //         Toast.fail('识别失败', 2)
+        //     })
+        //}
     }
     //提交
     submitInfo = async () => {
