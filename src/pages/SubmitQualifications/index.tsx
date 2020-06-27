@@ -287,6 +287,7 @@ export default class SubmitQualifications extends Component {
     }
     /**打开地图 */
     openMap = () => {
+        this.setStroage(this.state.data);
         router.push('/SubmitQualifications/map')
     }
     /**获取经营品类 */
@@ -449,6 +450,7 @@ export default class SubmitQualifications extends Component {
     }
     //选择有效期
     chooseDate = (type: string) => {
+        this.setStroage(this.state.data);
         router.push({ pathname: '/SubmitQualifications/chooseDate', query: { type } })
     }
     //上传图片
