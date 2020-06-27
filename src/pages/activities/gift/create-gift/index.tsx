@@ -6,6 +6,7 @@ import { addGift } from '@/services/api'
 import Header from '@/components/header'
 import SelectMonth from '../../components/selectMonth'
 import styles from './index.less'
+import router from 'umi/router'
 
 export default class CreateGift extends Component {
   state = {
@@ -43,6 +44,32 @@ export default class CreateGift extends Component {
 
   inputChange = (type: string) => ({ target: { value } }: any) => {
     // console.log(type, value)
+    let regex = /^(([1-9]{1}\d*)|(0{1}))(\.\d{0,2})?$/; // 保留两位小数
+    let regex1 = /^[1-9]\d*$/; // 保留整数
+    if (type === 'total_repertory_num' || type === 'each_num') {
+      if (regex1.test(value) || value == '') {
+        this.setState({ [type]: value })
+      }
+      return
+    }
+    if (type === 'offset_money' || type === 'use_min_price' || type === 'worth_money'){
+      if (regex.test(value) && value <= 1000000 || value == '') {
+        this.setState({ [type]: value })
+      }
+      return
+    }
+    if(type === 'gift_name'){
+      if(value.length <= 20){
+        this.setState({ [type]: value })
+      }
+      return
+    }
+    if(type === 'use_description' ){
+      if(value.length <= 50){
+        this.setState({ [type]: value })
+      }
+      return
+    }
     this.setState({ [type]: value })
   }
 
@@ -95,8 +122,10 @@ export default class CreateGift extends Component {
     }
     addGift(data).then(res => {
       console.log(res)
-      if(res.data.id){
-        Toast.success('添加成功',)
+      if (res.data.id) {
+        Toast.success('添加成功',1.5, ()=>{
+          router.goBack()
+        })
       }
     })
 
@@ -154,7 +183,7 @@ export default class CreateGift extends Component {
                   <Flex className={styles.info_item} justify='between' align='center'>
                     <div className={styles.item_label}>卡券名称</div>
                     <Flex className={styles.item_main} justify='end' align='center'>
-                      <input value={gift_name} onChange={this.inputChange('gift_name')} />元
+                      <input value={gift_name} onChange={this.inputChange('gift_name')} />
               </Flex>
                   </Flex>
                 )
