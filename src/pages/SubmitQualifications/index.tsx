@@ -519,7 +519,7 @@ export default class SubmitQualifications extends Component {
     //获取缓存
     getStroage = () => {
         //小于一天86400000毫秒时执行
-        if (localStorage.getItem('SubmitQualificationsTime') && (new Date().getTime() - JSON.parse(localStorage.getItem('SubmitQualificationsTime')) < 86400000)) {
+        if (localStorage.getItem('SubmitQualifications') && localStorage.getItem('SubmitQualificationsTime') && (new Date().getTime() - JSON.parse(localStorage.getItem('SubmitQualificationsTime')) < 86400000)) {
             let stroage: any = JSON.parse(localStorage.getItem('SubmitQualifications'));
             let tempData = {
                 province_id: 0,
@@ -569,7 +569,7 @@ export default class SubmitQualifications extends Component {
         this.setState({ data })
 
     }
-    
+
     //识别
     serachInfo = (type: string | number) => {
         if (type == '1' && this.state.data.idCardimg1 && this.state.data.idCardimg2) {
@@ -905,6 +905,7 @@ export default class SubmitQualifications extends Component {
                     Toast.success('提交成功', 5)
                     setTimeout(() => { router.push('/') }, 3000)
                     localStorage.removeItem('SubmitQualifications');
+                    localStorage.removeItem('SubmitQualificationsTime');
                 } else {
                     Toast.success(res.message, 5)
                 }
