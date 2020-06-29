@@ -65,7 +65,7 @@ export default class CreateGift extends Component {
       return
     }
     if(type === 'use_description' ){
-      if(value.length <= 50){
+      if(value.length <= 15){
         this.setState({ [type]: value })
       }
       return
