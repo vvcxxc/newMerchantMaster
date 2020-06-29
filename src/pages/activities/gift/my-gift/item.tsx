@@ -39,7 +39,7 @@ export default function Item({ item, }: Props) {
           <div className={styles.info_text}>剩余库存：{item.total_surplus_num}份（{item.each_num}张/份）</div>
           <div className={styles.info_text}>已派发：{item.total_give_num}份</div>
           <div className={styles.info_text}>已核销：{item.total_cancel_num}张 <div onClick={(e) => goTo(e,'verification')}>查看</div></div>
-          <div className={styles.info_text}>有效期至：{item.validity_day}</div>
+          <div className={styles.info_text}>有效期：自领取日{item.validity_day}天有效</div>
         </div>
       </Flex>
       <div className={styles.action_box}>
