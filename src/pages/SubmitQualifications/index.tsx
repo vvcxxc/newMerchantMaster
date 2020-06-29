@@ -287,6 +287,7 @@ export default class SubmitQualifications extends Component {
     }
     /**打开地图 */
     openMap = () => {
+        this.setStroage(this.state.data);
         router.push('/SubmitQualifications/map')
     }
     /**获取经营品类 */
@@ -449,6 +450,7 @@ export default class SubmitQualifications extends Component {
     }
     //选择有效期
     chooseDate = (type: string) => {
+        this.setStroage(this.state.data);
         router.push({ pathname: '/SubmitQualifications/chooseDate', query: { type } })
     }
     //上传图片
@@ -519,7 +521,7 @@ export default class SubmitQualifications extends Component {
     //获取缓存
     getStroage = () => {
         //小于一天86400000毫秒时执行
-        if (localStorage.getItem('SubmitQualificationsTime') && (new Date().getTime() - JSON.parse(localStorage.getItem('SubmitQualificationsTime')) < 86400000)) {
+        if (localStorage.getItem('SubmitQualifications') && localStorage.getItem('SubmitQualificationsTime') && (new Date().getTime() - JSON.parse(localStorage.getItem('SubmitQualificationsTime')) < 86400000)) {
             let stroage: any = JSON.parse(localStorage.getItem('SubmitQualifications'));
             let tempData = {
                 province_id: 0,
@@ -570,82 +572,86 @@ export default class SubmitQualifications extends Component {
 
     }
 
+    //识别
     serachInfo = (type: string | number) => {
-        // if (type == '1' && this.state.data.idCardimg1 && this.state.data.idCardimg2) {
-        //     Toast.loading('识别中');
-        //     request({
-        //         url: 'v3/idcard',
-        //         method: 'get',
-        //         params: {
-        //             idcard_front_img: this.state.data.idCardimg1,
-        //             idcard_back_img: this.state.data.idCardimg2
-        //         }
-        //     }).then(res => {
-        //         Toast.hide();
-        //         let { data, code } = res;
-        //         if (code == 200) {
-        //             let idCardNum = data.front.words_result['公民身份号码'].words
-        //             let name = data.front.words_result['姓名'].words;
-        //             let idCardValidity = data.back.words_result['失效日期'].words;
-        //             if (idCardValidity != '长期') {
-        //                 idCardValidity = moment(idCardValidity).format("YYYY-MM-DD")
-        //             }
-        //             if (idCardNum && name) {
-        //                 let data = this.state.data;
-        //                 data['name'] = name;
-        //                 data['idCardNum'] = idCardNum;
-        //                 data['idCardValidity'] = idCardValidity;
-        //                 this.setStroage(data);
-        //                 this.setState({ data });
-        //                 Toast.success('识别成功', 2);
-        //             } else {
-        //                 Toast.fail('识别失败，请手动填写信息', 2);
-        //             }
-        //         } else {
-        //             Toast.fail('识别失败，请手动填写信息', 2);
-        //         }
-        //     }).catch(err => {
-        //         Toast.hide();
-        //         Toast.fail('识别失败', 2)
-        //     })
-        // } else if (type == '3' && this.state.data.businessLicenseimg) {
-        //     Toast.loading('识别中');
-        //     request({
-        //         url: 'v3/business_license',
-        //         method: 'get',
-        //         params: {
-        //             business_license_img: this.state.data.businessLicenseimg
-        //         }
-        //     }).then(res => {
-        //         Toast.hide();
-        //         let { data, code } = res;
-        //         if (code == 200) {
-        //             let licenseName = data['单位名称'].words;
-        //             let registrationNumber = data['社会信用代码'].words;
-        //             let legalPerson = data['法人'].words;
-        //             let businessLicenseValidity = data['有效期'].words;
-        //             Toast.hide();
-        //             if (licenseName && registrationNumber && legalPerson && businessLicenseValidity) {
-        //                 let data = this.state.data;
-        //                 data['licenseName'] = licenseName;
-        //                 data['registrationNumber'] = registrationNumber;
-        //                 data['legalPerson'] = legalPerson;
-        //                 data['businessLicenseValidity'] = businessLicenseValidity;
-        //                 this.setStroage(data);
-        //                 this.setState({ data });
-        //                 Toast.success('识别成功', 2);
-        //             } else {
-        //                 Toast.fail('识别失败，请手动填写信息', 2);
-        //             }
-        //         } else {
-        //             Toast.fail('识别失败，请手动填写信息', 2);
-        //         }
-        //     }).catch(err => {
-        //         Toast.hide();
-        //         Toast.fail('识别失败', 2)
-        //     })
-        //}
+        if (type == '1' && this.state.data.idCardimg1 && this.state.data.idCardimg2) {
+            Toast.loading('识别中');
+            request({
+                url: '/ocr/identity',
+                method: 'get',
+                params: {
+                    front: this.state.data.idCardimg1,
+                    back: this.state.data.idCardimg2
+                }
+            }).then((res: any) => {
+                Toast.hide();
+                let data = res;
+                let idCardNum = data.front.words_result['公民身份号码'].words
+                let name = data.front.words_result['姓名'].words;
+                let idCardValidity = data.back.words_result['失效日期'].words;
+                if (idCardValidity != '长期') {
+                    idCardValidity = moment(idCardValidity).format("YYYY-MM-DD")
+                }
+                if (idCardNum && name) {
+                    let data = this.state.data;
+                    data['name'] = name;
+                    data['idCardNum'] = idCardNum;
+                    data['idCardValidity'] = idCardValidity;
+                    this.setStroage(data);
+                    this.setState({ data });
+                    Toast.success('识别成功', 2);
+                } else {
+                    Toast.fail('识别失败，请手动填写信息', 2);
+                }
+            }).catch((err: any) => {
+                Toast.hide();
+                Toast.fail('识别失败', 2)
+            })
+        } else if (type == '3' && this.state.data.businessLicenseimg) {
+            Toast.loading('识别中');
+            request({
+                url: '/ocr/license',
+                method: 'get',
+                headers: {
+                    ContentType: 'application/x-www-form-urlencoded',
+                },
+                params: {
+                    image: this.state.data.businessLicenseimg
+                }
+            }).then((res: any) => {
+                Toast.hide();
+                let data = res.words_result;
+                let licenseName = data['单位名称'].words;
+                let registrationNumber = data['社会信用代码'].words;
+                let legalPerson = data['法人'].words;
+                let businessLicenseValidity;
+                if (data['有效期'].words != "无") {
+                    businessLicenseValidity = data['有效期'].words.replace(/年/g, "-").replace(/月/g, "-").replace(/日/g, "")
+                }
+                Toast.hide();
+                if (licenseName && registrationNumber && legalPerson) {
+                    let data = this.state.data;
+                    data['licenseName'] = licenseName;
+                    data['registrationNumber'] = registrationNumber;
+                    data['legalPerson'] = legalPerson;
+                    if (businessLicenseValidity) {
+                        data['businessLicenseValidity'] = businessLicenseValidity;
+                    } else {
+                        data['businessLicenseValidity'] = '';
+                    };
+                    this.setStroage(data);
+                    this.setState({ data });
+                    Toast.success('识别成功', 2);
+                } else {
+                    Toast.fail('识别失败，请手动填写信息', 2);
+                }
+            }).catch((err: any) => {
+                Toast.hide();
+                Toast.fail('识别失败', 2)
+            })
+        }
     }
+
     //提交
     submitInfo = async () => {
         await this.setState({
@@ -901,6 +907,7 @@ export default class SubmitQualifications extends Component {
                     Toast.success('提交成功', 5)
                     setTimeout(() => { router.push('/') }, 3000)
                     localStorage.removeItem('SubmitQualifications');
+                    localStorage.removeItem('SubmitQualificationsTime');
                 } else {
                     Toast.success(res.message, 5)
                 }
