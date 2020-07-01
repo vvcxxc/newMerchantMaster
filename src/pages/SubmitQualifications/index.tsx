@@ -621,26 +621,20 @@ export default class SubmitQualifications extends Component {
             }).then((res: any) => {
                 Toast.hide();
                 let data = res.words_result;
-                let licenseName = data['单位名称'].words;
-                let registrationNumber = data['社会信用代码'].words;
-                let legalPerson = data['法人'].words;
-                let businessLicenseValidity;
-                if (data['有效期'].words != "无") {
-                    businessLicenseValidity = data['有效期'].words.replace(/年/g, "-").replace(/月/g, "-").replace(/日/g, "")
-                }
-                Toast.hide();
-                if (licenseName && registrationNumber && legalPerson) {
-                    let data = this.state.data;
-                    data['licenseName'] = licenseName;
-                    data['registrationNumber'] = registrationNumber;
-                    data['legalPerson'] = legalPerson;
-                    if (businessLicenseValidity) {
-                        data['businessLicenseValidity'] = businessLicenseValidity;
-                    } else {
-                        data['businessLicenseValidity'] = '';
-                    };
-                    this.setStroage(data);
-                    this.setState({ data });
+                let licenseName = data['单位名称'].words != "无" ? data['单位名称'].words : "";
+                let registrationNumber = data['社会信用代码'].words != "无" ? data['社会信用代码'].words : "";
+                let legalPerson = data['法人'].words != "无" ? data['法人'].words : "";
+                let businessLicenseValidity = data['有效期'].words != "无" ? data['有效期'].words.replace(/年/g, "-").replace(/月/g, "-").replace(/日/g, "") : "";
+
+                let data0 = this.state.data;
+                data0['licenseName'] = licenseName ? licenseName : '';
+                data0['registrationNumber'] = registrationNumber ? registrationNumber : '';
+                data0['legalPerson'] = legalPerson ? legalPerson : '';
+                data0['businessLicenseValidity'] = businessLicenseValidity ? businessLicenseValidity : '';
+                this.setStroage(data0);
+                this.setState({ data0 });
+
+                if (licenseName && registrationNumber && legalPerson && businessLicenseValidity) {
                     Toast.success('识别成功', 2);
                 } else {
                     Toast.fail('识别失败，请手动填写信息', 2);
@@ -901,7 +895,7 @@ export default class SubmitQualifications extends Component {
                     identity_card_valid_until: idCardValidity != '长期' ? idCardValidity : undefined,
                     email: storesMails != "" ? storesMails : undefined,
                 }
-            }).then(res => {
+            }).then((res: any) => {
                 Toast.hide();
                 if (res.data) {
                     Toast.success('提交成功', 5)
